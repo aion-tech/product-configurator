@@ -1,58 +1,36 @@
-from datetime import timedelta
+# -*- coding: utf-8 -*-
 
-from odoo import api, fields, models
+from openerp import models, fields
 
 
-class ProductConfigStepLine(models.Model):
-    _inherit = "product.config.step.line"
+class ProductConfigStep(models.Model):
+    _inherit = 'product.config.step'
 
-    website_tmpl_id = fields.Many2one(
-        string="Website Template",
-        comodel_name="ir.ui.view",
-        domain=lambda s: [
-            (
-                "inherit_id",
-                "=",
-                s.env.ref("website_product_configurator.config_form_base").id,
-            )
-        ],
+    """Extend the configuration step with a selectable view that will
+    display the content in the frontend for each separate step"""
+
+    view_id = fields.Many2one(
+        comodel_name='ir.ui.view',
+        string='Website View',
+        domain=lambda s: [(
+            'inherit_id', '=', s.env.ref(
+                'website_product_configurator.config_form_base').id
+        )],
+        help="Specific view for rendering this attribute in the frontend"
     )
-
-    def get_website_template(self):
-        """Return the external id of the qweb template linked to this step"""
-        if self.website_tmpl_id:
-            xml_id_dict = self.website_tmpl_id.get_external_id()
-            view_id = xml_id_dict.get(self.website_tmpl_id.id)
-        else:
-            view_id = self.env[
-                "product.config.session"
-            ].get_config_form_website_template()
-        return view_id
 
 
 class ProductConfigSession(models.Model):
-    _inherit = "product.config.session"
+    _inherit = 'product.config.session'
 
-    def remove_inactive_config_sessions(self):
-        check_date = fields.Datetime.from_string(fields.Datetime.now()) - timedelta(
-            days=3
-        )
-        sessions_to_remove = self.search(
-            [("write_date", "<", fields.Datetime.to_string(check_date))]
-        )
-        if sessions_to_remove:
-            sessions_to_remove.unlink()
+    """Set SID for public user. There is no other way to distinguish between
+    users that are not logged in with a personal username"""
 
-    @api.model
-    def get_config_form_website_template(self):
-        ICPSudo = self.env["ir.config_parameter"].sudo()
-        default_tmpl_xml_id = "website_product_configurator.config_form_select"
-        xml_id = ICPSudo.get_param(
-            "product_configurator.default_configuration_step_website_view_id"
-        )
-        website_tmpl_id = self.env["res.config.settings"].xml_id_to_record_id(
-            xml_id=xml_id
-        )
-        if not website_tmpl_id:
-            return default_tmpl_xml_id
-        return xml_id
+    session_id = fields.Char(
+        string='Session ID',
+        help='Website session ID to identify user'
+    )
+    website = fields.Boolean(
+        string='Website',
+        help='Used to filter website configuration session from others'
+    )
