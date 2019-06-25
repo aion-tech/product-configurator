@@ -1,60 +1,75 @@
-#  Copyright 2024 Simone Rubino - Aion Tech
-#  License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-
-from odoo import models
-from odoo.exceptions import ValidationError
+from odoo import api, models
+from odoo.tools import pycompat
+from odoo.tools import float_compare
 
 
 class ProductTemplate(models.Model):
-    _inherit = "product.template"
+    _inherit = 'product.template'
 
-    def _get_variant_for_combination(self, combination):
-        self.ensure_one()
-        if self.config_ok and combination:
-            variant = self.env["product.config.session"].search_variant(
-                product_tmpl_id=self,
-                value_ids=combination.product_attribute_value_id.ids,
-            )
-        else:
-            variant = super()._get_variant_for_combination(
-                combination,
-            )
-        return variant
+    def _website_price(self):
+        """Set website_price of configurable product
+        Uses formula ::
+        website_price = list_price + sum(extra price of default attr values)"""
+        config_products = self.filtered('config_ok')
+        super(ProductTemplate, self - config_products)._website_price()
+        for template in config_products:
+            result = template._get_website_price()
+            price_dict = result.get(template.id, {})
+            template.website_price =\
+                price_dict.get('website_price', template.list_price)
+            template.website_public_price =\
+                price_dict.get('website_public_price', template.list_price)
+            template.website_price_difference =\
+                price_dict.get('website_price_difference', 0.0)
 
-    def _get_possible_combinations(
-        self, parent_combination=None, necessary_values=None
-    ):
-        self.ensure_one()
-        if not self.config_ok:
-            yield from super()._get_possible_combinations(
-                parent_combination=parent_combination,
-                necessary_values=necessary_values,
-            )
-        else:
-            # For configurable products,
-            # custom values cannot be found among ptavs
-            # because it is actually a flag in the pta.
-            # super() would get stuck trying any possible combination
-            # for filling the missing ptav.
-            yield necessary_values or self.env[
-                "product.template.attribute.value"
-            ].browse()
+    @api.multi
+    def _get_website_price(self):
+        result = {}
+        qty = self._context.get('quantity', 1.0)
+        partner = self.env.user.partner_id
+        current_website = self.env['website'].get_current_website()
+        pricelist = current_website.get_current_pricelist()
+        company_id = current_website.company_id
 
-    def _is_combination_possible_by_config(self, combination, ignore_no_variant=False):
-        self.ensure_one()
-        if not self.config_ok:
-            res = super()._is_combination_possible_by_config(
-                combination,
-                ignore_no_variant=ignore_no_variant,
-            )
-        else:
-            try:
-                self.env["product.config.session"].validate_configuration(
-                    value_ids=combination.product_attribute_value_id.ids,
-                    product_tmpl_id=self.id,
-                )
-            except ValidationError:
-                res = False
-            else:
-                res = True
-        return res
+        context = dict(self._context, pricelist=pricelist.id, partner=partner)
+        self2 = (
+            self.with_context(context)
+            if self._context != context else self
+        )
+        ret = self.env.user.has_group(
+            'sale.group_show_price_subtotal'
+        ) and 'total_excluded' or 'total_included'
+
+        for p, p2 in pycompat.izip(self, self2):
+            taxes_ids = p.sudo().taxes_id.filtered(
+                lambda x: x.company_id == company_id)
+            taxes = partner.property_account_position_id.map_tax(taxes_ids)
+            website_price = taxes.compute_all(
+                p2.price,
+                pricelist.currency_id,
+                quantity=qty,
+                product=p2,
+                partner=partner
+            )[ret]
+
+            price_without_pricelist = p.list_price
+            if company_id.currency_id != pricelist.currency_id:
+                price_without_pricelist = company_id.currency_id.compute(
+                    price_without_pricelist, pricelist.currency_id)
+            price_without_pricelist = taxes.compute_all(
+                price_without_pricelist, pricelist.currency_id)[ret]
+            website_price_difference = True if float_compare(
+                price_without_pricelist,
+                website_price,
+                precision_rounding=pricelist.currency_id.rounding
+            ) > 0 else False
+            website_public_price = taxes.compute_all(
+                p2.lst_price, quantity=qty, product=p2, partner=partner)[ret]
+            result.update({
+                p.id: {
+                    'website_price': website_price,
+                    'website_price_difference': website_price_difference,
+                    'website_public_price': website_public_price,
+                }
+            })
+        return result
