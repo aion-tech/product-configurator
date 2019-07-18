@@ -1,60 +1,47 @@
-from odoo import api, fields, models
+# -*- coding: utf-8 -*-
+
+from odoo import models, fields, api
 
 
 class ResConfigSettings(models.TransientModel):
-    _inherit = "res.config.settings"
+    _inherit = 'res.config.settings'
 
     website_tmpl_id = fields.Many2one(
-        comodel_name="ir.ui.view",
-        string="Website Template",
+        'ir.ui.view', 'Website Template',
         domain=lambda s: [
-            (
-                "inherit_id",
-                "=",
-                s.env.ref("website_product_configurator.config_form_base").id,
-            )
+            ('inherit_id', '=', s.env.ref(
+                'website_product_configurator.config_form_base').id)
         ],
     )
 
-    def xml_id_to_record_id(self, xml_id):
-        if not xml_id or len(xml_id.split(".")) != 2:
-            return False
-
-        website_tmpl_id = self.env.ref(xml_id)
-        if website_tmpl_id.exists() and website_tmpl_id.inherit_id != self.env.ref(
-            "website_product_configurator.config_form_base"
-        ):
-            return False
-        return website_tmpl_id
-
     def set_values(self):
-        result = super().set_values()
-        ICPSudo = self.env["ir.config_parameter"].sudo()
-        website_tmpl_xml_id = ""
-        if self.website_tmpl_id:
-            website_tmpl_xml_id = self.website_tmpl_id.xml_id
+        super(ResConfigSettings, self).set_values()
+        ICPSudo = self.env['ir.config_parameter'].sudo()
         ICPSudo.set_param(
-            "product_configurator.default_configuration_step_website_view_id",
-            website_tmpl_xml_id,
-        )
-        return result
+            'product_configurator.configuration_step_view_id',
+            self.website_tmpl_id.xml_id)
+
 
     @api.model
     def get_values(self):
-        res = super().get_values()
-        ICPSudo = self.env["ir.config_parameter"].sudo()
-        xml_id = ICPSudo.get_param(
-            "product_configurator.default_configuration_step_website_view_id"
-        )
+        res = super(ResConfigSettings, self).get_values()
+        ICPSudo = self.env['ir.config_parameter'].sudo()
+        website_tmpl = ICPSudo.get_param(
+            'product_configurator.configuration_step_view_id')
 
-        website_tmpl_xml_id = self.xml_id_to_record_id(xml_id=xml_id)
-        res.update(
-            {
-                "website_tmpl_id": (
-                    website_tmpl_xml_id
-                    and website_tmpl_xml_id.id
-                    or website_tmpl_xml_id
-                )
-            }
-        )
+        if not website_tmpl or len(website_tmpl.split('.')) != 2:
+            website_tmpl = 'website_product_configurator.config_form_select'
+
+        website_tmpl_id = self.env['ir.model.data'].search([
+            ('module', '=', website_tmpl.split('.')[0]),
+            ('name', '=', website_tmpl.split('.')[1])])
+
+        if not website_tmpl_id:
+            website_tmpl = 'website_product_configurator.config_form_select'
+            website_tmpl_id = self.env['ir.model.data'].search([
+                ('module', '=', website_tmpl.split('.')[0]),
+                ('name', '=', website_tmpl.split('.')[1])])
+
+        res.update({'website_tmpl_id': website_tmpl_id.res_id})
+
         return res
