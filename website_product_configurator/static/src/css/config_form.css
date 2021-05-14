@@ -41,42 +41,43 @@
 
 .spinner_qty {
     padding: 0;
-    min-width: 48px!important;
+    min-width: 48px !important;
     text-align: center;
 }
 
 .custom_config_value.spinner_qty {
-    max-width: 50px!important;
+    max-width: 50px !important;
 }
 
-.config_attribute input[type=radio], .config_attribute input[type=checkbox] {
+.config_attribute input[type="radio"],
+.config_attribute input[type="checkbox"] {
     position: absolute;
     z-index: 999;
     margin: 5px auto auto 5px;
     cursor: pointer;
 }
 
-.config_attribute input:active +.image_config_attr_value_radio {
+.config_attribute input:active + .image_config_attr_value_radio {
     opacity: 90%;
 }
-.config_attribute input[type=radio]:checked +.image_config_attr_value_radio {
+.config_attribute input[type="radio"]:checked + .image_config_attr_value_radio {
     -webkit-filter: none;
-       -moz-filter: none;
-            filter: none;
+    -moz-filter: none;
+    filter: none;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.config_attribute input[type=checkbox]:checked +.image_config_attr_value_radio {
+.config_attribute input[type="checkbox"]:checked + .image_config_attr_value_radio {
     -webkit-filter: none;
-       -moz-filter: none;
-            filter: none;
+    -moz-filter: none;
+    filter: none;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.config_attribute input[type=radio][disabled] +.image_config_attr_value_radio {
+.config_attribute input[type="radio"][disabled] + .image_config_attr_value_radio {
     -webkit-filter: brightness(90%) contrast(110%) grayscale(50%) opacity(50%);
-       -moz-filter: brightness(90%) contrast(110%) grayscale(50%) opacity(50%);
-            filter: brightness(90%) contrast(110%) grayscale(50%) opacity(50%);
+    -moz-filter: brightness(90%) contrast(110%) grayscale(50%) opacity(50%);
+    filter: brightness(90%) contrast(110%) grayscale(50%) opacity(50%);
     border: none;
     border-radius: none;
     box-shadow: none;
@@ -84,10 +85,10 @@
     cursor: not-allowed;
 }
 
-.config_attribute input[type=checkbox][disabled] +.image_config_attr_value_radio {
+.config_attribute input[type="checkbox"][disabled] + .image_config_attr_value_radio {
     -webkit-filter: brightness(90%) contrast(110%) grayscale(50%) opacity(50%);
-       -moz-filter: brightness(90%) contrast(110%) grayscale(50%) opacity(50%);
-            filter: brightness(90%) contrast(110%) grayscale(50%) opacity(50%);
+    -moz-filter: brightness(90%) contrast(110%) grayscale(50%) opacity(50%);
+    filter: brightness(90%) contrast(110%) grayscale(50%) opacity(50%);
     border: none;
     border-radius: none;
     box-shadow: none;
@@ -103,16 +104,16 @@
     width: 160px;
     height: 160px;
     -webkit-transition: all 100ms ease-in;
-       -moz-transition: all 100ms ease-in;
-            transition: all 100ms ease-in;
+    -moz-transition: all 100ms ease-in;
+    transition: all 100ms ease-in;
     -webkit-filter: brightness(90%) contrast(110%) grayscale(50%) opacity(90%);
-       -moz-filter: brightness(90%) contrast(110%) grayscale(50%) opacity(90%);
-            filter: brightness(90%) contrast(110%) grayscale(50%) opacity(90%);
+    -moz-filter: brightness(90%) contrast(110%) grayscale(50%) opacity(90%);
+    filter: brightness(90%) contrast(110%) grayscale(50%) opacity(90%);
 }
 .image_config_attr_value_radio:hover {
     -webkit-filter: none;
-       -moz-filter: none;
-            filter: none;
+    -moz-filter: none;
+    filter: none;
     border: solid silver 1px;
     border-radius: 5px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -133,7 +134,7 @@
     margin: 5px 10px 5px 10px;
     float: left;
 }
-.control-label{
+.control-label {
     margin-top: 15px;
     margin-bottom: auto;
 }
@@ -146,5 +147,5 @@
     position: absolute;
     z-index: 1;
     width: 138px;
-    margin: 25px auto auto 5px;;
+    margin: 25px auto auto 5px;
 }
