@@ -32,3 +32,8 @@
 	path = OCA/server-tools
 	url = git@github.com:OCA/server-tools.git
 	branch = 16.0
+
+[submodule "OCA/reporting-engine"]
+	path = OCA/reporting-engine
+	url = git@github.com:OCA/reporting-engine.git
+	branch = 16.0
