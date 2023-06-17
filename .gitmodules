@@ -42,3 +42,8 @@
 	path = OCA/account-invoice-reporting
 	url = git@github.com:OCA/account-invoice-reporting.git
 	branch = 16.0
+
+[submodule "OCA/l10n-italy"]
+	path = OCA/l10n-italy
+	url = git@github.com:OCA/l10n-italy.git
+	branch = 16.0
