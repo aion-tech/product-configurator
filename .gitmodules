@@ -22,3 +22,8 @@
 	path = OCA/crm
 	url = git@github.com:OCA/crm.git
 	branch = 16.0
+
+[submodule "OCA/sale-reporting"]
+	path = OCA/sale-reporting
+	url = git@github.com:OCA/sale-reporting.git
+	branch = 16.0
