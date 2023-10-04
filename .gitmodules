@@ -7,7 +7,6 @@
 	path = OCA/hr
 	url = git@github.com:OCA/hr.git
 	branch = 16.0
-<<<<<<< HEAD
 
 [submodule "OCA/purchase-workflow"]
 	path = OCA/purchase-workflow
@@ -53,51 +52,4 @@
 	path = aion-tech/l10n-italy
 	url = git@github.com:aion-tech/l10n-italy.git
 	branch = 16.0-super-merge
-||||||| 6fd4294
-=======
 
-[submodule "OCA/purchase-workflow"]
-	path = OCA/purchase-workflow
-	url = git@github.com:OCA/purchase-workflow.git
-	branch = 16.0
-
-[submodule "OCA/sale-workflow"]
-	path = OCA/sale-workflow
-	url = git@github.com:OCA/sale-workflow.git
-	branch = 16.0
-
-[submodule "OCA/crm"]
-	path = OCA/crm
-	url = git@github.com:OCA/crm.git
-	branch = 16.0
-
-[submodule "OCA/sale-reporting"]
-	path = OCA/sale-reporting
-	url = git@github.com:OCA/sale-reporting.git
-	branch = 16.0
-
-[submodule "OCA/server-tools"]
-	path = OCA/server-tools
-	url = git@github.com:OCA/server-tools.git
-	branch = 16.0
-
-[submodule "OCA/reporting-engine"]
-	path = OCA/reporting-engine
-	url = git@github.com:OCA/reporting-engine.git
-	branch = 16.0
-
-[submodule "OCA/account-invoice-reporting"]
-	path = OCA/account-invoice-reporting
-	url = git@github.com:OCA/account-invoice-reporting.git
-	branch = 16.0
-
-[submodule "OCA/l10n-italy"]
-	path = OCA/l10n-italy
-	url = git@github.com:OCA/l10n-italy.git
-	branch = 16.0
-
-[submodule "OCA/commission"]
-	path = OCA/commission
-	url = git@github.com:OCA/commission.git
-	branch = 16.0
->>>>>>> 5f0444dad072ad3aa028d027ac8a81e91f799292
