@@ -43,12 +43,12 @@
 	url = git@github.com:OCA/account-invoice-reporting.git
 	branch = 16.0
 
-[submodule "OCA/l10n-italy"]
-	path = OCA/l10n-italy
-	url = git@github.com:OCA/l10n-italy.git
-	branch = 16.0
-
 [submodule "OCA/commission"]
 	path = OCA/commission
 	url = git@github.com:OCA/commission.git
 	branch = 16.0
+
+[submodule "aion-tech/l10n-italy"]
+	path = aion-tech/l10n-italy
+	url = git@github.com:aion-tech/l10n-italy.git
+	branch = 16.0-super-merge
