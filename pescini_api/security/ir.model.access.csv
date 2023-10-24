@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+res_partner_pescini_api_group_running_user,Pescini Api: Running user read partners,base.model_res_partner,pescini_api.pescini_api_group,1,0,0,0
+res_user_pescini_api_group_running_user,Pescini Api: Running user read users,base.model_res_users,pescini_api.pescini_api_group,1,0,0,0
+res_user_pescini_api_group_res_country,Pescini Api: Running user CRUx countries,base.model_res_country,pescini_api.pescini_api_group,1,1,1,0
+res_user_pescini_api_group_res_country_state,Pescini Api: Running user CRUx states,base.model_res_country_state,pescini_api.pescini_api_group,1,1,1,0
+res_user_pescini_api_group_res_partner,Pescini Api: Running user CRUx partners,base.model_res_partner,pescini_api.pescini_api_group,1,1,1,0
+res_user_pescini_api_group_crm_lead,Pescini Api: Running user CxUx crm leads,crm.model_crm_lead,pescini_api.pescini_api_group,0,1,1,0
+res_user_pescini_api_group_snail_mail,Pescini Api: Running user xRxx snailmail letter,snailmail.model_snailmail_letter,pescini_api.pescini_api_group,1,0,0,0
+res_user_pescini_api_group_ir_sequence,Pescini Api: Running user xRxx ir sequence,base.model_ir_sequence,pescini_api.pescini_api_group,1,0,0,0
+res_user_pescini_api_group_sale_order,Pescini Api: Running user CRxx sale order,sale.model_sale_order,pescini_api.pescini_api_group,1,0,1,0
+res_user_pescini_api_group_company_classification_user,Pescini Api: Running user CRUx company classification,pescini_crm.model_company_classification,pescini_api.pescini_api_group,1,1,1,0
+res_user_pescini_api_group_utm_campaign,Pescini Api: Running user CRUx utm campaign,utm.model_utm_campaign,pescini_api.pescini_api_group,1,1,1,0
+res_user_pescini_api_group_utm_stage,Pescini Api: Running user xRxx utm stage,utm.model_utm_stage,pescini_api.pescini_api_group,1,0,0,0
+res_user_pescini_api_group_utm_source,Pescini Api: Running user CRUx utm source,utm.model_utm_source,pescini_api.pescini_api_group,1,1,1,0

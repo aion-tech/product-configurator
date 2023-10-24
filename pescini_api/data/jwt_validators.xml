@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record
+    id="pescini_validator_sale"
+    model="auth.jwt.validator">
+        <field name="name">jwt_validator_pescini_sale</field>
+        <field name="audience">pescini.sale.api</field>
+        <field name="issuer">pescini.odoo</field>
+        <field name="signature_type">secret</field>
+        <field name="secret_algorithm">HS256</field>
+        <field name="secret_key">ChangeMeInProd</field>
+        <field name="user_id_strategy">static</field>
+        <field
+        name="static_user_id"
+        ref="pescini_api.pescini_api_user" />
+        <field name="partner_id_strategy"></field>
+        <field
+        name="partner_id_required"
+        eval="False" />
+    </record>
+    <record
+    id="pescini_validator_crm"
+    model="auth.jwt.validator">
+        <field name="name">jwt_validator_pescini_crm</field>
+        <field name="audience">pescini.crm.api</field>
+        <field name="issuer">pescini.odoo</field>
+        <field name="signature_type">secret</field>
+        <field name="secret_algorithm">HS256</field>
+        <field name="secret_key">ChangeMeInProdAsWell</field>
+        <field name="user_id_strategy">static</field>
+        <field
+        name="static_user_id"
+        ref="pescini_api.pescini_api_user" />
+        <field name="partner_id_strategy"></field>
+        <field
+        name="partner_id_required"
+        eval="False" />
+    </record>
+</odoo>
