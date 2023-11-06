@@ -48,8 +48,11 @@
 	url = git@github.com:OCA/commission.git
 	branch = 16.0
 
-[submodule "aion-tech/l10n-italy"]
-	path = aion-tech/l10n-italy
-	url = git@github.com:aion-tech/l10n-italy.git
-	branch = 16.0-super-merge
-
+[submodule "OCA/l10n-italy"]
+	path = OCA/l10n-italy
+	url = git@github.com:OCA/l10n-italy.git
+	branch = 16.0
+[submodule "aion-tech/ait_accounting_addons"]
+	path = aion-tech/ait_accounting_addons
+	url = git@github.com:aion-tech/ait_accounting_addons.git
+	branch = 16.0
