@@ -29,6 +29,13 @@
           <field name="registration_date" />
         </xpath>
 
+        <!-- Task PES-26 -->
+        <xpath expr="//group[2]/div[@class='o_row o_row_readonly'][2]" position="after">
+        <field name="company_type" />
+          <field name="marketing_consensus" />
+        </xpath>
+
+
       </field>
     </record>
 
