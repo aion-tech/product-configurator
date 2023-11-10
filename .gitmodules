@@ -86,3 +86,7 @@
 	path = OCA/account-closing
 	url = git@github.com:OCA/account-closing.git
 	branch = 16.0
+[submodule "OCA/multi-company"]
+	path = OCA/multi-company
+	url = git@github.com:OCA/multi-company.git
+	branch = 16.0

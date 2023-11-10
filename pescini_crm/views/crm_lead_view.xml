@@ -1,0 +1,68 @@
+<odoo>
+  <data>
+
+    <!-- Task PES-25 -->
+    <record id="crm_lead_view_form_inherit" model="ir.ui.view">
+      <field name="name">crm.lead.form.inherit</field>
+      <field name="model">crm.lead</field>
+      <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+      <field name="arch" type="xml">
+      
+        <!-- Task PES-25 -->
+        <xpath expr="//field[@name='partner_name']" position="after">
+          <field name="company_type" />
+        </xpath>
+
+        <!-- Task PES-25 -->
+        <xpath expr="//field[@name='mobile']" position="after">
+        <br></br>
+          <div class="col">
+            <strong>
+              <label for="marketing_consensus" string="Marketing consensus" />
+            </strong>
+            <field name="marketing_consensus" />
+          </div>
+        </xpath>
+
+        <!-- Task PES-25 -->
+        <xpath expr="//field[@name='date_open']" position="before">
+          <field name="registration_date" />
+        </xpath>
+
+      </field>
+    </record>
+
+    <!-- Task PES-25 -->
+    <record id="crm_case_tree_view_leadsinherit" model="ir.ui.view">
+      <field name="name">crm.lead.tree.inherit</field>
+      <field name="model">crm.lead</field>
+      <field name="inherit_id" ref="crm.crm_case_tree_view_leads"/>
+      <field name="arch" type="xml">
+      
+        <!-- Task PES-25 -->
+        <xpath expr="//field[@name='priority']" position="after">
+          <field name="company_type" />
+          <field name="marketing_consensus" />
+          <field name="registration_date" />
+        </xpath>
+
+      </field>
+    </record>
+
+
+    <record id="view_crm_case_leads_filter_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.search.lead</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_case_leads_filter" />
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <separator />
+                <!-- Task PES-25 -->
+                <filter name="registration_date" string="Data Registrazione -oggi"
+                domain = "[('registration_date','=',context_today())]"/>
+            </xpath>
+        </field>
+    </record>
+
+  </data>
+</odoo>
