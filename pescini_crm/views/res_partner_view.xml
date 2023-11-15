@@ -17,6 +17,10 @@
           </div>
         </xpath>
 
+        <xpath expr="//field[@name='vat']" position="after">
+          <field name="company_classification" />
+        </xpath>
+
       </field>
     </record>
 

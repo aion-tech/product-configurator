@@ -10,7 +10,7 @@
       
         <!-- Task PES-25 -->
         <xpath expr="//field[@name='partner_name']" position="after">
-          <field name="company_type" />
+          <field name="company_classification" />
         </xpath>
 
         <!-- Task PES-25 -->
@@ -31,8 +31,13 @@
 
         <!-- Task PES-26 -->
         <xpath expr="//group[2]/div[@class='o_row o_row_readonly'][2]" position="after">
-        <field name="company_type" />
+          <field name="company_classification" />
           <field name="marketing_consensus" />
+        </xpath>
+
+        <!-- Task PES-27 -->
+        <xpath expr="//button[@name='action_set_won_rainbowman']" position="before">
+          <button name="create_contact_action" string="Create Contact" type="object" style="background-color: #6d4b64; color: white;" />
         </xpath>
 
 
@@ -48,11 +53,10 @@
       
         <!-- Task PES-25 -->
         <xpath expr="//field[@name='priority']" position="after">
-          <field name="company_type" />
+          <field name="company_classification" />
           <field name="marketing_consensus" />
           <field name="registration_date" />
         </xpath>
-
       </field>
     </record>
 

@@ -1,3 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_pescini_crm,pescini_crm.reilab_xxx,model_pescini_crm_reilab_xxx,base.group_user,1,1,1,1
-
+access_pescini_crm,company.classification pescini_user,model_company_classification,base.group_user,1,1,1,1
+access_pescini_wizard_crm,access.crm.create.contact,model_crm_create_contact,sales_team.group_sale_salesman,1,1,1,0
