@@ -32,7 +32,7 @@
         <!-- Task PES-26 -->
         <xpath expr="//group[2]/div[@class='o_row o_row_readonly'][2]" position="after">
           <field name="company_classification" />
-          <field name="marketing_consensus" />
+          <field name="marketing_consensus"/>
         </xpath>
 
         <!-- Task PES-27 -->
@@ -53,13 +53,17 @@
       
         <!-- Task PES-25 -->
         <xpath expr="//field[@name='priority']" position="after">
-          <field name="company_classification" />
-          <field name="marketing_consensus" />
-          <field name="registration_date" />
+          <field name="company_classification" optional="hide"/>
+          <field name="marketing_consensus" optional="hide"/>
+          <field name="registration_date" optional="hide"/>
         </xpath>
       </field>
     </record>
 
+    <!-- Task PES-25 -->
+    <record id="crm.crm_lead_all_leads" model="ir.actions.act_window">
+      <field name="context">{'search_default_filter_create_date_today': 1}</field>
+    </record>
 
     <record id="view_crm_case_leads_filter_inherit" model="ir.ui.view">
         <field name="name">crm.lead.search.lead</field>
@@ -69,8 +73,9 @@
             <xpath expr="//search" position="inside">
                 <separator />
                 <!-- Task PES-25 -->
-                <filter name="registration_date" string="Data Registrazione -oggi"
-                domain = "[('registration_date','=',context_today())]"/>
+                <filter string="Data Creazione - oggi" name="filter_create_date_today"
+                    domain="[('create_date', '>=', (context_today(), '00:00:00')),
+                            ('create_date', '&lt;=', (context_today(), '23:59:59'))]"/>
             </xpath>
         </field>
     </record>
