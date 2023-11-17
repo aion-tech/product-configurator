@@ -193,13 +193,14 @@ class CrmLead(models.Model):
             for field, value in fields_to_check_for_company:
                 if getattr(self.partner_id, field) != value:
                     res[field] = value
-            if self.contact_name:
+            if self.contact_name:                
                 # Create contact and attach it to the company
                 contact_vals = {}
                 for field, value in fields_to_check_for_contact:
                     contact_vals[field] = value
                 contact_vals['parent_id'] = self.partner_id.id
-                self.env['res.partner'].sudo().create(contact_vals)
+                contact_id = self.env['res.partner'].sudo().create(contact_vals)
+                self.write({'partner_id': contact_id.id})
         elif is_person:
             res = {}
             for field, value in fields_to_check_for_contact:

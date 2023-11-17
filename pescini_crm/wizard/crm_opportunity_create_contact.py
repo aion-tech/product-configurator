@@ -44,7 +44,7 @@ class OpportunityCreateContact(models.TransientModel):
         """ Convert lead to opportunity or merge lead and opportunity and open
             the freshly created opportunity view.
         """
-        self.ensure_one()
+        self.ensure_one()        
         if self.action == 'create':
             self.lead_id._handle_partner_assignment(create_missing=True)
         elif self.action == 'exist':
