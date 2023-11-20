@@ -16,6 +16,8 @@ from odoo.tools.translate import _
 from odoo.tools import date_utils, email_split, is_html_empty, groupby
 from odoo.tools.misc import get_lang
 
+_logger = logging.getLogger(__name__)
+
 CRM_LEAD = 'crm.lead'
 
 
@@ -57,6 +59,9 @@ class CrmLead(models.Model):
         res = super(CrmLead, self).create(vals)
         if not res.registration_date:
             res.registration_date = datetime.now()
+        _logger.info(str(vals))
+        _logger.info(str(res))
+        
         return res
 
     #Task PES-27
