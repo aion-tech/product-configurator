@@ -55,6 +55,7 @@ class CrmLead(models.Model):
                                     store=True)
 
     # Task PES-25
+    @api.model
     def create(self, vals):
         _logger.info(str(vals))
         res = super(CrmLead, self).create(vals)
