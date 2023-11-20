@@ -235,7 +235,7 @@ class CrmLead(models.Model):
         fields_to_check_for_company = [
             ('name', self.partner_name),
             ('company_classification', self.company_classification.id),
-            ('street', self.street),#Task PES-27
+            ('street', self.street),
             ('state_id', self.state_id.id),
             ('zip', self.zip),
             ('country_id', self.country_id.id),
@@ -251,17 +251,17 @@ class CrmLead(models.Model):
             ('email', self.email_from),
             ('function', self.function),
             ('phone', self.phone),
-            ('mobile', self.mobile),#Task PES-27
+            ('mobile', self.mobile),
             ('marketing_consensus', self.marketing_consensus),
             ('user_id', self.user_id.id),
             ('team_id', self.team_id.id),
             ('lang', self.lang_id.code)
-        ]#Task PES-27
+        ]
         res = {}
         fields_to_check = False
 
         if partner_id.company_type == 'person':
-            fields_to_check = fields#Task PES-27_to_check_for_contact
+            fields_to_check = fields_to_check_for_contact
 
             res = self._process_fields(fields_to_check, partner_id)
             if self.partner_name:
@@ -275,12 +275,14 @@ class CrmLead(models.Model):
             res = self._process_fields(fields_to_check, partner_id)
             if self.contact_name:
                 contact_vals = self._process_fields(fields_to_check_for_contact, partner_id)
+                contact_vals['parent_id'] = partner_id.id
                 contact_id = self.env['res.partner'].sudo().create(contact_vals)
+                
         return res, contact_id
 
     #Task PES-27 
     def _process_fields(self,fields_to_check, partner_id):
-        res = {}#Task PES-27
+        res = {}
         for field, value in fields_to_check:
             if getattr(partner_id, field) != value:
                 if value != False:
