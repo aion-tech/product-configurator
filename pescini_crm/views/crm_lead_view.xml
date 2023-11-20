@@ -36,9 +36,9 @@
         </xpath>
 
         <!-- Task PES-27 -->
-        <xpath expr="//button[@name='action_set_won_rainbowman']" position="before">
+        <!-- <xpath expr="//button[@name='action_set_won_rainbowman']" position="before">
           <button name="create_contact_action" string="Create Contact" type="object" style="background-color: #6d4b64; color: white;" />
-        </xpath>
+        </xpath> -->
 
 
       </field>

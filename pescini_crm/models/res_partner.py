@@ -13,7 +13,8 @@ class ResPartner(models.Model):
     marketing_consensus = fields.Boolean(string="Marketing consensus",
                                          readonly=False,
                                          store=True)
-
+    
+    # Task PES-25
     company_classification = fields.Many2one(string="Company classification",
                                              comodel_name="company.classification",
                                              store=True)

@@ -40,12 +40,12 @@ class OpportunityCreateContact(models.TransientModel):
     partner_id = fields.Many2one('res.partner', 'Customer')
 
     # Task PES-27 
-    def action_apply(self):
-        """ Convert lead to opportunity or merge lead and opportunity and open
-            the freshly created opportunity view.
-        """
-        self.ensure_one()        
-        if self.action == 'create':
-            self.lead_id._handle_partner_assignment(create_missing=True)
-        elif self.action == 'exist':
-            self.lead_id._handle_partner_assignment(force_partner_id=self.partner_id.id, create_missing=False)
+    # def action_apply(self):
+    #     """ Convert lead to opportunity or merge lead and opportunity and open
+    #         the freshly created opportunity view.
+    #     """
+    #     self.ensure_one()        
+    #     if self.action == 'create':
+    #         self.lead_id._handle_partner_assignment(create_missing=True)
+    #     elif self.action == 'exist':
+    #         self.lead_id._handle_partner_assignment(force_partner_id=self.partner_id.id, create_missing=False)
