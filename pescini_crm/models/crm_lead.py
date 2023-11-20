@@ -56,12 +56,10 @@ class CrmLead(models.Model):
 
     # Task PES-25
     def create(self, vals):
+        _logger.info(str(vals))
         res = super(CrmLead, self).create(vals)
         if not res.registration_date:
             res.registration_date = datetime.now()
-        _logger.info(str(vals))
-        _logger.info(str(res))
-        
         return res
 
     #Task PES-27
