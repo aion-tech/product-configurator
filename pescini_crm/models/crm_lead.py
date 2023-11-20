@@ -272,7 +272,7 @@ class CrmLead(models.Model):
         contact_id = False
         if partner_id.company_type == 'company':                
             fields_to_check = fields_to_check_for_company
-            res = self._process_fiel#Task PES-27ds(fields_to_check, partner_id)
+            res = self._process_fields(fields_to_check, partner_id)
             if self.contact_name:
                 contact_vals = self._process_fields(fields_to_check_for_contact, partner_id)
                 contact_id = self.env['res.partner'].sudo().create(contact_vals)
