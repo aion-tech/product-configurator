@@ -77,15 +77,16 @@ class CrmLead(models.Model):
         contact_res = {}
         company_res = {}
         company_vals = self._fields_to_check_for_company()
+
         contact_res = self._check_fields(contact_vals, self, contact_res)
         contact_res['parent_id'] = force_company_id.id
         force_partner_id.parent_id = force_company_id.id
+
         company_res = self._check_fields(company_vals, force_company_id, company_res)
+
         keys = []
-        
-        
         for key, value in company_res.items():
-            if force_company_id.mapped(key)[0]:
+            if force_company_id.mapped(key) and force_company_id.mapped(key)[0]:
                 keys.append(key)
         if keys:
             for key in keys:
