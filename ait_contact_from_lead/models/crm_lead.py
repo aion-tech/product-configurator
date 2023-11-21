@@ -37,7 +37,8 @@ class CrmLead(models.Model):
           based on lead information;
         """
         for lead in self:
-            contact_id = False            
+            contact_id = False  
+            res = {}          
             if force_company_id and force_partner_id:                
                 force_partner = self.env[RES_PARTNER].sudo().browse(
                     force_partner_id)
