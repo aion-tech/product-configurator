@@ -40,8 +40,7 @@ class OpportunityCreateContact(models.TransientModel):
     lead_id = fields.Many2one('crm.lead', "Associated Lead", required=True)
     partner_id = fields.Many2one('res.partner', 'Customer')
 
-    company_id = fields.Many2one(comodel_name='res.partner', 
-                                 string='Company')
+    company_id = fields.Many2one('res.partner', 'Company')
 
     # Task PES-27 
     def action_apply(self):
