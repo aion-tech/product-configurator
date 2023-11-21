@@ -236,7 +236,7 @@ class CrmLead(models.Model):
             fields_to_check_for_company, partner_id.parent_id)
         keys = []
         for key, value in company_vals.items():
-            if partner_id.parent_id.mapped(key)[0]:
+            if partner_id.parent_id.mapped(key) and partner_id.parent_id.mapped(key)[0]:
                 keys.append(key)
         if keys:
             for key in keys:
@@ -286,7 +286,7 @@ class CrmLead(models.Model):
             res = self._process_fields(fields_to_check, partner_id)
             keys = []
             for key, value in res.items():
-                if partner_id.mapped(key)[0]:
+                if partner_id.mapped(key) and partner_id.mapped(key)[0]:
                     keys.append(key)
             if keys:
                 for key in keys:
