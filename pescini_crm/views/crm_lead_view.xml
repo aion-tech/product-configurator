@@ -1,0 +1,84 @@
+<odoo>
+  <data>
+
+    <!-- Task PES-25 -->
+    <record id="crm_lead_view_form_inherit" model="ir.ui.view">
+      <field name="name">crm.lead.form.inherit</field>
+      <field name="model">crm.lead</field>
+      <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+      <field name="arch" type="xml">
+      
+        <!-- Task PES-25 -->
+        <xpath expr="//field[@name='partner_name']" position="after">
+          <field name="company_classification" />
+        </xpath>
+
+        <!-- Task PES-25 -->
+        <xpath expr="//field[@name='mobile']" position="after">
+        <br></br>
+          <div class="col">
+            <strong>
+              <label for="marketing_consensus" string="Marketing consensus" />
+            </strong>
+            <field name="marketing_consensus" />
+          </div>
+        </xpath>
+
+        <!-- Task PES-25 -->
+        <xpath expr="//field[@name='date_open']" position="before">
+          <field name="registration_date" />
+        </xpath>
+
+        <!-- Task PES-26 -->
+        <xpath expr="//group[2]/div[@class='o_row o_row_readonly'][2]" position="after">
+          <field name="company_classification" />
+          <field name="marketing_consensus"/>
+        </xpath>
+
+        <!-- Task PES-27 -->
+        <!-- <xpath expr="//button[@name='action_set_won_rainbowman']" position="before">
+          <button name="create_contact_action" string="Create Contact" type="object" style="background-color: #6d4b64; color: white;" />
+        </xpath> -->
+
+
+      </field>
+    </record>
+
+    <!-- Task PES-25 -->
+    <record id="crm_case_tree_view_leadsinherit" model="ir.ui.view">
+      <field name="name">crm.lead.tree.inherit</field>
+      <field name="model">crm.lead</field>
+      <field name="inherit_id" ref="crm.crm_case_tree_view_leads"/>
+      <field name="arch" type="xml">
+      
+        <!-- Task PES-25 -->
+        <xpath expr="//field[@name='priority']" position="after">
+          <field name="company_classification" optional="hide"/>
+          <field name="marketing_consensus" optional="hide"/>
+          <field name="registration_date" optional="hide"/>
+        </xpath>
+      </field>
+    </record>
+
+    <!-- Task PES-25 -->
+    <record id="crm.crm_lead_all_leads" model="ir.actions.act_window">
+      <field name="context">{'search_default_filter_create_date_today': 1}</field>
+    </record>
+
+    <record id="view_crm_case_leads_filter_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.search.lead</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_case_leads_filter" />
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <separator />
+                <!-- Task PES-25 -->
+                <filter string="Data Creazione - oggi" name="filter_create_date_today"
+                    domain="[('create_date', '>=', (context_today(), '00:00:00')),
+                            ('create_date', '&lt;=', (context_today(), '23:59:59'))]"/>
+            </xpath>
+        </field>
+    </record>
+
+  </data>
+</odoo>
