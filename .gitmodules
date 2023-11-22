@@ -82,3 +82,7 @@
 	path = OCA/account-closing
 	url = git@github.com:OCA/account-closing.git
 	branch = 16.0
+[submodule "aion-tech/ait_crm_addons"]
+	path = aion-tech/ait_crm_addons
+	url = git@github.com:aion-tech/ait_crm_addons.git
+	branch = 16.0
