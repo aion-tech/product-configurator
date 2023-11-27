@@ -11,6 +11,8 @@
         <!-- Task PES-25 -->
         <xpath expr="//field[@name='partner_name']" position="after">
           <field name="company_classification" />
+          <!-- Task PES-33 -->
+          <field name="agent" />
         </xpath>
 
         <!-- Task PES-25 -->
@@ -33,6 +35,8 @@
         <xpath expr="//group[2]/div[@class='o_row o_row_readonly'][2]" position="after">
           <field name="company_classification" />
           <field name="marketing_consensus"/>
+          <!-- Task PES-33 -->
+          <field name="agent" />
         </xpath>
 
         <!-- Task PES-27 -->
