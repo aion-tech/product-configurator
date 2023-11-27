@@ -9,7 +9,7 @@
     "website": "https://aion-tech.it/",
 
     "category": "Uncategorized",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
 
     "depends": [
         "base",
