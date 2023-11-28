@@ -9,11 +9,12 @@
     "website": "https://aion-tech.it/",
 
     "category": "Sales/CRM",
-    "version": "14.0.1.0.17",
+    "version": "14.0.1.0.18",
 
     "depends": [
         "base",
         "crm",
+        "account_commission",
     ],
     "data": [
         "security/ir.model.access.csv",
