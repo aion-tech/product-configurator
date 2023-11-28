@@ -13,6 +13,16 @@
           <field name="company_classification" />
           <!-- Task PES-33 -->
           <field name="agent" />
+          <!-- Task PES-38 -->
+          <field name="revenue" widget="monetary"/>
+        </xpath>
+
+        <xpath expr="//div[@id='probability'][1]" position="replace">
+          <div id="probability" class="d-inline-block" attrs="{'invisible': [('show_prop', '=', False)]}">
+              <field name="is_automated_probability" invisible="1"/>
+              <field name="probability" widget="float" class="oe_inline o_input_6ch" attrs="{'invisible': [('show_prop', '=', False)]}"/>
+              <span class="oe_grey"> %</span>
+          </div>
         </xpath>
 
         <!-- Task PES-25 -->
@@ -37,14 +47,11 @@
           <field name="marketing_consensus"/>
           <!-- Task PES-33 -->
           <field name="agent" />
+          <!-- Task PES-38 -->
+          <field name="create_equals_to_registration" invisible="1"/>
+          <field name="show_prop" invisible="1"/>
+          <field name="revenue" widget="monetary"/>
         </xpath>
-
-        <!-- Task PES-27 -->
-        <!-- <xpath expr="//button[@name='action_set_won_rainbowman']" position="before">
-          <button name="create_contact_action" string="Create Contact" type="object" style="background-color: #6d4b64; color: white;" />
-        </xpath> -->
-
-
       </field>
     </record>
 
@@ -60,6 +67,9 @@
           <field name="company_classification" optional="hide"/>
           <field name="marketing_consensus" optional="hide"/>
           <field name="registration_date" optional="hide"/>
+          <!-- Task PES-38 -->
+          <field name="create_equals_to_registration" invisible="1"/>
+          
         </xpath>
       </field>
     </record>
@@ -80,9 +90,12 @@
                 <filter string="Data Creazione - oggi" name="filter_create_date_today"
                     domain="[('create_date', '>=', (context_today(), '00:00:00')),
                             ('create_date', '&lt;=', (context_today(), '23:59:59'))]"/>
+
+                <!-- Task PES-38 -->
+                <filter string="Data Creazione &lt;&gt; Data Registrazione" name="filter_create_date_diff_regis_date"
+                        domain="[('create_equals_to_registration', '=', False)]"/>
             </xpath>
         </field>
     </record>
-
   </data>
 </odoo>

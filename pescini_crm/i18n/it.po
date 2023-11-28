@@ -6,14 +6,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e-20231106\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-27 11:58+0000\n"
-"PO-Revision-Date: 2023-11-27 11:58+0000\n"
+"POT-Creation-Date: 2023-11-28 13:18+0000\n"
+"PO-Revision-Date: 2023-11-28 13:18+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: pescini_crm
+#: model_terms:ir.ui.view,arch_db:pescini_crm.crm_lead_view_form_inherit
+msgid "<span class=\"oe_grey\"> %</span>"
+msgstr ""
 
 #. module: pescini_crm
 #: model:ir.model.fields,field_description:pescini_crm.field_crm_lead__agent
@@ -59,6 +64,11 @@ msgid "Convert Lead to Opportunity (not in mass)"
 msgstr "Convertire lead in opportunità (non in massa)"
 
 #. module: pescini_crm
+#: model:ir.model.fields,field_description:pescini_crm.field_crm_lead__create_equals_to_registration
+msgid "Create equals to Registration"
+msgstr ""
+
+#. module: pescini_crm
 #: model:ir.model.fields,field_description:pescini_crm.field_company_classification__create_uid
 msgid "Created by"
 msgstr ""
@@ -71,6 +81,11 @@ msgstr ""
 #. module: pescini_crm
 #: model_terms:ir.ui.view,arch_db:pescini_crm.view_crm_case_leads_filter_inherit
 msgid "Data Creazione - oggi"
+msgstr ""
+
+#. module: pescini_crm
+#: model_terms:ir.ui.view,arch_db:pescini_crm.view_crm_case_leads_filter_inherit
+msgid "Data Creazione <> Data Registrazione"
 msgstr ""
 
 #. module: pescini_crm
@@ -127,6 +142,16 @@ msgstr "Pubblica Amministrazione"
 #: model:ir.model.fields,field_description:pescini_crm.field_crm_lead__registration_date
 msgid "Registration Date"
 msgstr "Data Registrazione"
+
+#. module: pescini_crm
+#: model:ir.model.fields,field_description:pescini_crm.field_crm_lead__show_prop
+msgid "Show Boolean"
+msgstr "Mostra"
+
+#. module: pescini_crm
+#: model:ir.model.fields,field_description:pescini_crm.field_crm_lead__revenue
+msgid "Total revenue"
+msgstr "Fatturato totale"
 
 #. module: pescini_crm
 #. odoo-python

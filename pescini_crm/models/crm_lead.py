@@ -44,6 +44,21 @@ class CrmLead(models.Model):
                                              comodel_name="company.classification",
                                              store=True,
                                              readonly=False)
+    
+    # Task PES-38
+    show_prop = fields.Boolean(string="Show Boolean",
+                               store=True) 
+    
+    # Task PES-38
+    @api.onchange('partner_id')
+    @api.depends('partner_id')
+    def _compute_revenue(self):
+        for lead in self:
+            lead.revenue = lead.partner_id.revenue
+
+    # Task PES-38
+    revenue = fields.Float(string="Total revenue",
+                           store=True)
 
     # Task PES-25
     @api.depends('partner_id')
@@ -65,6 +80,10 @@ class CrmLead(models.Model):
                                     readonly=True,
                                     store=True)
 
+    # Task PES-38
+    create_equals_to_registration = fields.Boolean(string="Create equals to Registration",
+                                                   store=True)
+
     # Task PES-25
     @api.model
     def create(self, vals):
@@ -76,7 +95,11 @@ class CrmLead(models.Model):
 
         # If the 'registration_date' is not set, assign the current datetime
         if not res.registration_date:
-            res.registration_date = datetime.now()
+            res.registration_date = datetime.today()
+
+        # Task PES-38
+        if res.create_date and res.registration_date == res.create_date.date():
+            res.create_equals_to_registration = True
 
         # Task PES-33
 
@@ -108,3 +131,8 @@ class CrmLead(models.Model):
 
         # Call the write method of the parent class (superclass) to perform the actual update
         return super(CrmLead, self).write(vals)
+    
+    # def _handle_partner_assignment(self, force_partner_id=False, create_missing=True):
+    #     res = super(CrmLead, self)._handle_partner_assignment(force_partner_id=False, create_missing=True)
+
+
