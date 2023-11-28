@@ -48,6 +48,8 @@ class CrmLead(models.Model):
                 # Task PES-27
                 res['marketing_consensus'] = self.marketing_consensus
                 force_company_id.company_classification = self.company_classification.id
+                # Task PES-38
+                force_company_id.revenue = self.revenue
 
             elif force_partner_id and not force_company_id:
                 force_partner = self.env[RES_PARTNER].sudo().browse(
@@ -58,6 +60,8 @@ class CrmLead(models.Model):
                     # Task PES-27
                     res['marketing_consensus'] = self.marketing_consensus
                     force_partner.parent_id.company_classification = self.company_classification.id
+                    # Task PES-38
+                    force_partner.parent_id.revenue = self.revenue
                 else:
                     res, contact_id = self._prepare_customer_values_no_parent(
                         force_partner)
@@ -66,8 +70,13 @@ class CrmLead(models.Model):
                         contact_id.marketing_consensus = lead.marketing_consensus
                     else:
                         res['marketing_consensus'] = lead.marketing_consensus
+                        # Task PES-38
+                        res['revenue'] = self.revenue
+
                     if lead.company_classification:
                         res['company_classification'] = lead.company_classification.id
+                        # Task PES-38
+                        res['revenue'] = self.revenue
 
             lead.partner_id = contact_id.id if contact_id else force_partner_id
             if 'lang_id' in res.keys():
@@ -77,11 +86,16 @@ class CrmLead(models.Model):
             lead.partner_id.write(res) if res else False
             if not lead.partner_id and create_missing:
                 partner = lead._create_customer()
-                # Task PES-27                
+                # Task PES-27
                 if not partner.parent_id:
                     partner.company_classification = self.company_classification.id
+                    # Task PES-38
+                    partner.revenue = self.revenue
                 else:
                     partner.parent_id.company_classification = self.company_classification.id
                     partner.parent_id.marketing_consensus = False
+                    # Task PES-38
+                    partner.parent_id.revenue = self.revenue
+                    partner.revenue = False
                 partner.marketing_consensus = self.marketing_consensus
                 lead.partner_id = partner.id
