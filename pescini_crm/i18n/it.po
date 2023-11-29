@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e-20231106\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-28 13:18+0000\n"
-"PO-Revision-Date: 2023-11-28 13:18+0000\n"
+"POT-Creation-Date: 2023-11-29 16:52+0000\n"
+"PO-Revision-Date: 2023-11-29 16:52+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -150,6 +150,8 @@ msgstr "Mostra"
 
 #. module: pescini_crm
 #: model:ir.model.fields,field_description:pescini_crm.field_crm_lead__revenue
+#: model:ir.model.fields,field_description:pescini_crm.field_res_partner__revenue
+#: model:ir.model.fields,field_description:pescini_crm.field_res_users__revenue
 msgid "Total revenue"
 msgstr "Fatturato totale"
 

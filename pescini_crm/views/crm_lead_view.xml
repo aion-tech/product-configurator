@@ -17,6 +17,12 @@
           <field name="revenue" widget="monetary"/>
         </xpath>
 
+        <!-- Task PES-38 -->
+        <xpath expr="//div[@class='oe_edit_only d-md-flex align-items-center'][1]/label[1]" position="replace">
+          <label for="probability" attrs="{'invisible': [('show_prop', '=', False)]}"/>
+        </xpath>
+        
+        <!-- Task PES-38 -->
         <xpath expr="//div[@id='probability'][1]" position="replace">
           <div id="probability" class="d-inline-block" attrs="{'invisible': [('show_prop', '=', False)]}">
               <field name="is_automated_probability" invisible="1"/>

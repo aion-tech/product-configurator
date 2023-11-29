@@ -9,7 +9,7 @@
     "website": "https://aion-tech.it/",
 
     "category": "Sales/CRM",
-    "version": "14.0.1.0.19",
+    "version": "14.0.1.0.20",
 
     "depends": [
         "base",
