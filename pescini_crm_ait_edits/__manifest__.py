@@ -7,7 +7,7 @@
     "website": "https://aion-tech.it/",
 
     "description": "pescini_crm_ait_edits",
-    "version": "14.0.1.0.2",
+    "version": "14.0.1.0.3",
 
     "depends": [
         "ait_contact_from_lead",
