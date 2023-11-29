@@ -134,5 +134,3 @@ class CrmLead(models.Model):
     
     # def _handle_partner_assignment(self, force_partner_id=False, create_missing=True):
     #     res = super(CrmLead, self)._handle_partner_assignment(force_partner_id=False, create_missing=True)
-
-
