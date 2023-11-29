@@ -24,6 +24,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:pescini_crm.field_crm_lead__agent
 msgid "Agent"
 msgstr "Agente"
+#: model:ir.model.fields,field_description:pescini_crm.field_crm_create_contact__lead_id
+msgid "Associated Lead"
+msgstr ""
+
+#. module: pescini_crm
+#: model_terms:ir.ui.view,arch_db:pescini_crm.crm_create_partner_view_form
+msgid "Cancel"
+msgstr "Annulla"
 
 #. module: pescini_crm
 #: model:ir.model.fields.selection,name:pescini_crm.selection__company_classification__company_type__company
@@ -59,42 +67,63 @@ msgid "Company classification"
 msgstr "Classificazione aziendale"
 
 #. module: pescini_crm
+#: model_terms:ir.ui.view,arch_db:pescini_crm.crm_create_partner_view_form
+msgid "Confirm"
+msgstr "Conferma"
+
+#. module: pescini_crm
 #: model:ir.model,name:pescini_crm.model_crm_lead2opportunity_partner
 msgid "Convert Lead to Opportunity (not in mass)"
 msgstr "Convertire lead in opportunità (non in massa)"
 
 #. module: pescini_crm
-#: model:ir.model.fields,field_description:pescini_crm.field_crm_lead__create_equals_to_registration
-msgid "Create equals to Registration"
-msgstr ""
+#: model:ir.actions.act_window,name:pescini_crm.crm_create_partner_action
+#: model_terms:ir.ui.view,arch_db:pescini_crm.crm_create_partner_view_form
+#: model_terms:ir.ui.view,arch_db:pescini_crm.crm_lead_view_form_inherit
+msgid "Create Contact"
+msgstr "Crea contatto"
+
+#. module: pescini_crm
+#: model:ir.model.fields.selection,name:pescini_crm.selection__crm_create_contact__action__create
+msgid "Create a new customer"
+msgstr "Crea un nuovo cliente"
+
+#. module: pescini_crm
+#: model:ir.model,name:pescini_crm.model_crm_create_contact
+msgid "Create new or use existing Customer on Opportuity"
+msgstr "Crea un nuovo cliente o utilizzalo esistente su Opportunità"
 
 #. module: pescini_crm
 #: model:ir.model.fields,field_description:pescini_crm.field_company_classification__create_uid
+#: model:ir.model.fields,field_description:pescini_crm.field_crm_create_contact__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: pescini_crm
 #: model:ir.model.fields,field_description:pescini_crm.field_company_classification__create_date
+#: model:ir.model.fields,field_description:pescini_crm.field_crm_create_contact__create_date
 msgid "Created on"
 msgstr ""
 
 #. module: pescini_crm
-#: model_terms:ir.ui.view,arch_db:pescini_crm.view_crm_case_leads_filter_inherit
-msgid "Data Creazione - oggi"
-msgstr ""
+#: model:ir.model.fields,field_description:pescini_crm.field_crm_create_contact__partner_id
+msgid "Customer"
+msgstr "Cliente"
 
 #. module: pescini_crm
 #: model_terms:ir.ui.view,arch_db:pescini_crm.view_crm_case_leads_filter_inherit
-msgid "Data Creazione <> Data Registrazione"
+msgid "Data Registrazione -oggi"
 msgstr ""
 
 #. module: pescini_crm
 #: model:ir.model.fields,field_description:pescini_crm.field_company_classification__display_name
+#: model:ir.model.fields,field_description:pescini_crm.field_crm_create_contact__display_name
 msgid "Display Name"
 msgstr ""
 
 #. module: pescini_crm
 #: model:ir.model.fields,field_description:pescini_crm.field_company_classification__id
+#: model:ir.model.fields,field_description:pescini_crm.field_crm_create_contact__id
 msgid "ID"
 msgstr ""
 
@@ -105,18 +134,26 @@ msgstr "Individuale"
 
 #. module: pescini_crm
 #: model:ir.model.fields,field_description:pescini_crm.field_company_classification____last_update
+#: model:ir.model.fields,field_description:pescini_crm.field_crm_create_contact____last_update
 msgid "Last Modified on"
 msgstr "Ultima modifica in data"
 
 #. module: pescini_crm
 #: model:ir.model.fields,field_description:pescini_crm.field_company_classification__write_uid
+#: model:ir.model.fields,field_description:pescini_crm.field_crm_create_contact__write_uid
 msgid "Last Updated by"
 msgstr "Ultimo aggiornamento di"
 
 #. module: pescini_crm
 #: model:ir.model.fields,field_description:pescini_crm.field_company_classification__write_date
+#: model:ir.model.fields,field_description:pescini_crm.field_crm_create_contact__write_date
 msgid "Last Updated on"
 msgstr "Ultimo aggiornamento il"
+
+#. module: pescini_crm
+#: model:ir.model.fields.selection,name:pescini_crm.selection__crm_create_contact__action__exist
+msgid "Link to an existing customer"
+msgstr "Connessione a un cliente esistente"
 
 #. module: pescini_crm
 #: model:ir.model.fields,field_description:pescini_crm.field_crm_lead__marketing_consensus
@@ -132,6 +169,11 @@ msgstr "Consenso Marketing"
 #: model:ir.model.fields,help:pescini_crm.field_company_classification__name
 msgid "Name"
 msgstr "Nome"
+
+#. module: pescini_crm
+#: model:ir.model.fields,field_description:pescini_crm.field_crm_create_contact__action
+msgid "Operazione"
+msgstr ""
 
 #. module: pescini_crm
 #: model:ir.model.fields.selection,name:pescini_crm.selection__company_classification__company_type__pa
