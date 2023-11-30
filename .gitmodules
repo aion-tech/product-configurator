@@ -51,7 +51,7 @@
 [submodule "OCA/l10n-italy"]
 	path = OCA/l10n-italy
 	url = git@github.com:aion-tech/l10n-italy.git
-	branch = 16.0-pes
+	branch = 16.0-pes-test
 [submodule "aion-tech/ait_accounting_addons"]
 	path = aion-tech/ait_accounting_addons
 	url = git@github.com:aion-tech/ait_accounting_addons.git

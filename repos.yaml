@@ -6,4 +6,4 @@ OCA/l10n-italy:
   - OCA 16.0
   fetch_all:
   - OCA
-  target: origin 16.0-pes
+  target: origin 16.0-pes-test
