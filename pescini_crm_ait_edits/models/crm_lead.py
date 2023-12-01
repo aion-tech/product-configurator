@@ -38,7 +38,7 @@ class CrmLead(models.Model):
         for lead in self:
             contact_id = False
             res = {}
-            if force_company_id and force_partner_id:                
+            if force_company_id and force_partner_id:
                 force_partner = self.env[RES_PARTNER].sudo().browse(
                     force_partner_id)
                 force_company_id = self.env[RES_PARTNER].sudo().browse(
@@ -103,12 +103,21 @@ class CrmLead(models.Model):
                 partner.marketing_consensus = self.marketing_consensus
                 lead.partner_id = partner.id
             partner = lead.partner_id
+
+            # Task PES-33 
+            partner.agent_ids = [(6, 0, [lead.agent.id])
+                                 ] if lead.agent else False
             if partner.parent_id:
                 partner.parent_id.company_classification = lead.company_classification.id if lead.company_classification else False
                 partner.company_classification = False
 
                 partner.parent_id.revenue = lead.revenue
                 partner.revenue = False
+
+                # Task PES-33
+                partner.parent_id.agent_ids = [
+                    (6, 0, [lead.agent.id])] if lead.agent else False
+                partner.agent_ids = False
 
                 # partner.parent_id.marketing_consensus = False
                 # partner.marketing_consensus = lead.marketing_consensus
