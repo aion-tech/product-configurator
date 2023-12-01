@@ -17,6 +17,11 @@
           <field name="revenue" widget="monetary"/>
         </xpath>
 
+        <!-- Task PES-27 -->
+        <xpath expr="//field[@name='medium_id']" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </xpath>
+
         <!-- Task PES-38 -->
         <xpath expr="//div[@class='oe_edit_only d-md-flex align-items-center'][1]/label[1]" position="replace">
           <label for="probability" attrs="{'invisible': [('show_prop', '=', False)]}"/>
