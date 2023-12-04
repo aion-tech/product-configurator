@@ -50,8 +50,8 @@
 
 [submodule "OCA/l10n-italy"]
 	path = OCA/l10n-italy
-	url = git@github.com:OCA/l10n-italy.git
-	branch = 16.0
+	url = git@github.com:aion-tech/l10n-italy.git
+	branch = 16.0-pes
 
 [submodule "OCA/server-ux"]
 	path = OCA/server-ux
