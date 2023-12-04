@@ -1,0 +1,9 @@
+OCA/l10n-italy:
+  remotes:
+    origin: git@github.com:aion-tech/l10n-italy.git
+    OCA: git@github.com:OCA/l10n-italy.git
+  merges:
+  - OCA 16.0
+  fetch_all:
+  - OCA
+  target: origin 16.0-pes-test
