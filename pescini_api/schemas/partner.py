@@ -183,10 +183,9 @@ class Partner(BaseModelOdoo):
     def _odomain(self) -> List[str | Tuple[str, str, Any]]:
         return ["|", ("email", "=", self.email), ("phone", "=", self.phone)]
 
-    def o_model_dump(
-        self,
-        env: Environment,
-        is_x2many: bool = False,
-    ):
-        res = super().o_model_dump(env, is_x2many)
-        return res
+    def _o_model_dump_postserialize_hook(self, rec: int, env: Environment) -> int:
+        rec = super()._o_model_dump_postserialize_hook(rec, env)
+        # Always update marketing_consensus regardless of _opolicy
+        partner_id = env["res.partner"].browse(rec)
+        partner_id.marketing_consensus = self.marketing_consensus
+        return rec

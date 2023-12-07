@@ -441,3 +441,32 @@ class PesciniApiTestCrm(PesciniApiTestCommon):
             lead_id.campaign_id.name,
             self.person_lead_vals["campaign"]["title"],
         )
+
+    def test_partner_postserialize_hook(self):
+        existing_partner_id = self.env["res.partner"].create(
+            {
+                "name": "Hogwarts School of Witchcraft and Wizardry",
+                "email": self.company_vals["email"],
+                "phone": self.company_vals["phone"],
+            }
+        )
+        lead = self._post_crm(self.company_lead_vals)
+        lead_id = self.env["crm.lead"].browse(lead)
+        self.assertEqual(
+            lead_id.partner_id.id,
+            existing_partner_id.id,
+        )
+        self.assertEqual(
+            existing_partner_id.marketing_consensus,
+            self.company_vals["marketing_consensus"],
+        )
+
+        self.company_vals.update({"marketing_consensus": False})
+        self._post_crm(self.company_lead_vals)
+        # by default existing company vals shouldn't be updated if they're not empty
+        # (see Partner._opolicy). marketing_consensus should've been updated anyway
+        # (see Parnter._o_model_dump_postserialize_hook)
+        self.assertEqual(
+            existing_partner_id.marketing_consensus,
+            False,
+        )
