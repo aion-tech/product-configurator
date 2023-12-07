@@ -1,7 +1,6 @@
 from functools import partial
 from unittest import mock
 
-from fastapi import status
 from odoo.addons.fastapi import dependencies
 from odoo.addons.fastapi.tests.common import FastAPITransactionCase
 from odoo.tests.common import tagged

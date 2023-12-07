@@ -46,6 +46,7 @@ class PesciniApiTestCrm(PesciniApiTestCommon):
                 "type_name": "Student",
                 "company_type": "individual",
             },
+            "role_type": "Gryffindor Student",
             "email": "h.granger@hogwarts.edu",
             "phone": "000-4815162342-000",
             "street": "Hogwarts Castle, Highlands, Gryffindor dormitory",
@@ -202,6 +203,7 @@ class PesciniApiTestCrm(PesciniApiTestCommon):
             lead_id.phone,
             self.company_lead_vals["partner"]["phone"],
         )
+
         self.assertEqual(
             lead_id.street,
             self.company_lead_vals["partner"]["street"],
@@ -265,6 +267,7 @@ class PesciniApiTestCrm(PesciniApiTestCommon):
                 "email": self.person_vals["email"],
                 "is_company": False,
                 "parent_id": company_id.id,
+                "function": "Actress",
             }
         )
         lead = self._post_crm(self.person_lead_vals)
@@ -278,55 +281,59 @@ class PesciniApiTestCrm(PesciniApiTestCommon):
 
         # all partner fields should've been updated (both populated and empty ones)
         self.assertEqual(
-            lead_id.partner_id.name,
+            existing_partner_id.name,
             self.person_vals["name"],
         )
         self.assertEqual(
-            lead_id.partner_id.company_classification.name,
+            existing_partner_id.company_classification.name,
             "Student",
         )
         self.assertEqual(
-            lead_id.partner_id.company_classification.company_type,
+            existing_partner_id.company_classification.company_type,
             "person",
         )
         self.assertEqual(
-            lead_id.partner_id.email,
+            existing_partner_id.email,
             self.person_vals["email"],
         )
         self.assertEqual(
-            lead_id.partner_id.phone,
+            existing_partner_id.phone,
             self.person_vals["phone"],
         )
         self.assertEqual(
-            lead_id.partner_id.street,
+            existing_partner_id.function,
+            self.person_vals["role_type"],
+        )
+        self.assertEqual(
+            existing_partner_id.street,
             self.person_vals["street"],
         )
         self.assertEqual(
-            lead_id.partner_id.zip,
+            existing_partner_id.zip,
             self.person_vals["zip"],
         )
         self.assertEqual(
-            lead_id.partner_id.city,
+            existing_partner_id.city,
             self.person_vals["city"],
         )
         self.assertEqual(
-            lead_id.partner_id.state_id.name,
+            existing_partner_id.state_id.name,
             self.person_vals["state"]["name"],
         )
         self.assertEqual(
-            lead_id.partner_id.state_id.code,
+            existing_partner_id.state_id.code,
             self.person_vals["state"]["code"],
         )
         self.assertEqual(
-            lead_id.partner_id.country_id.name,
+            existing_partner_id.country_id.name,
             self.person_vals["country"]["name"],
         )
         self.assertEqual(
-            lead_id.partner_id.country_id.code,
+            existing_partner_id.country_id.code,
             self.person_vals["country"]["code"],
         )
         self.assertEqual(
-            lead_id.partner_id.marketing_consensus,
+            existing_partner_id.marketing_consensus,
             self.person_vals["marketing_consensus"],
         )
         self.assertEqual(
@@ -381,6 +388,10 @@ class PesciniApiTestCrm(PesciniApiTestCommon):
         self.assertEqual(
             lead_id.phone,
             self.person_lead_vals["partner"]["phone"],
+        )
+        self.assertEqual(
+            lead_id.function,
+            self.person_lead_vals["partner"]["role_type"],
         )
         self.assertEqual(
             lead_id.street,

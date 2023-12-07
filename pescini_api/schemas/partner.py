@@ -61,7 +61,7 @@ class Contact(BaseModelOdoo):
     _omodel: str = "res.partner"
     type: Literal["contact"]
     name: str
-    function: str = Field(..., alias="role_type")
+    function: Optional[str] = Field(default=None, alias="role_type")
     email: str
     phone: str
 
@@ -76,7 +76,7 @@ class Contact(BaseModelOdoo):
 
 class ContactAddress(BaseModelOdoo):
     _omodel: str = "res.partner"
-    type: str
+    type: Literal["delivery", "invoice"]
     name: str
     email: str
     phone: str
@@ -131,6 +131,7 @@ class Partner(BaseModelOdoo):
     )
     email: Optional[str] = None
     phone: Optional[str] = None
+    function: Optional[str] = Field(default=None, alias="role_type")
     vat: Optional[str] = Field(default=None, description="Partita IVA")
     street: str = Field(..., description="Via/piazza e numero civico.")
     zip: str
