@@ -52,6 +52,7 @@
 	path = OCA/l10n-italy
 	url = git@github.com:aion-tech/l10n-italy.git
 	branch = 16.0-pes-test
+
 [submodule "aion-tech/ait_accounting_addons"]
 	path = aion-tech/ait_accounting_addons
 	url = git@github.com:aion-tech/ait_accounting_addons.git
@@ -86,11 +87,43 @@
 	path = OCA/account-closing
 	url = git@github.com:OCA/account-closing.git
 	branch = 16.0
+
 [submodule "OCA/multi-company"]
 	path = OCA/multi-company
 	url = git@github.com:OCA/multi-company.git
 	branch = 16.0
+
 [submodule "aion-tech/ait_crm_addons"]
 	path = aion-tech/ait_crm_addons
 	url = git@github.com:aion-tech/ait_crm_addons.git
+	branch = 16.0
+
+[submodule "OCA/rest-framework"]
+	path = OCA/rest-framework
+	url = git@github.com:OCA/rest-framework.git
+	branch = 16.0
+
+[submodule "OCA/web-api"]
+	path = OCA/web-api
+	url = git@github.com:OCA/web-api.git
+	branch = 16.0
+
+[submodule "OCA/server-auth"]
+	path = OCA/server-auth
+	url = git@github.com:OCA/server-auth.git
+	branch = 16.0
+
+[submodule "OCA/connector"]
+	path = OCA/connector
+	url = git@github.com:OCA/connector.git
+	branch = 16.0
+
+[submodule "aion-tech/ait_rest_framework"]
+	path = aion-tech/ait_rest_framework
+	url = git@github.com:aion-tech/ait_rest_framework.git
+	branch = 16.0
+
+[submodule "aion-tech/ait_server_auth"]
+	path = aion-tech/ait_server_auth
+	url = git@github.com:aion-tech/ait_server_auth.git
 	branch = 16.0
