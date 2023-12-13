@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e-20231106\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-29 16:52+0000\n"
-"PO-Revision-Date: 2023-11-29 16:52+0000\n"
+"POT-Creation-Date: 2023-12-13 16:21+0000\n"
+"PO-Revision-Date: 2023-12-13 16:21+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,11 +21,19 @@ msgid "<span class=\"oe_grey\"> %</span>"
 msgstr ""
 
 #. module: pescini_crm
+#: model:ir.model.fields,field_description:pescini_crm.field_commission_assignment__agent
 #: model:ir.model.fields,field_description:pescini_crm.field_crm_lead__agent
 msgid "Agent"
 msgstr "Agente"
 
 #. module: pescini_crm
+#: model:ir.actions.act_window,name:pescini_crm.commission_assignments_action
+#: model:ir.ui.menu,name:pescini_crm.commission_assignments_menu
+msgid "Commission Assignments"
+msgstr "Gestione e assegnazione agenti"
+
+#. module: pescini_crm
+#: model:ir.model.fields,field_description:pescini_crm.field_commission_assignment__company_id
 #: model:ir.model.fields.selection,name:pescini_crm.selection__company_classification__company_type__company
 msgid "Company"
 msgstr "Azienda"
@@ -52,6 +60,7 @@ msgid "Company Type"
 msgstr "Tipo di azienda"
 
 #. module: pescini_crm
+#: model:ir.model.fields,field_description:pescini_crm.field_commission_assignment__company_classification_id
 #: model:ir.model.fields,field_description:pescini_crm.field_crm_lead__company_classification
 #: model:ir.model.fields,field_description:pescini_crm.field_res_partner__company_classification
 #: model:ir.model.fields,field_description:pescini_crm.field_res_users__company_classification
@@ -69,11 +78,13 @@ msgid "Create equals to Registration"
 msgstr ""
 
 #. module: pescini_crm
+#: model:ir.model.fields,field_description:pescini_crm.field_commission_assignment__create_uid
 #: model:ir.model.fields,field_description:pescini_crm.field_company_classification__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: pescini_crm
+#: model:ir.model.fields,field_description:pescini_crm.field_commission_assignment__create_date
 #: model:ir.model.fields,field_description:pescini_crm.field_company_classification__create_date
 msgid "Created on"
 msgstr ""
@@ -89,11 +100,18 @@ msgid "Data Creazione <> Data Registrazione"
 msgstr ""
 
 #. module: pescini_crm
+#: model:ir.model.fields,field_description:pescini_crm.field_commission_assignment__display_name
 #: model:ir.model.fields,field_description:pescini_crm.field_company_classification__display_name
 msgid "Display Name"
 msgstr ""
 
 #. module: pescini_crm
+#: model_terms:ir.ui.view,arch_db:pescini_crm.commission_assignments_view_tree
+msgid "Generate agent assignments"
+msgstr "Assegna agenti"
+
+#. module: pescini_crm
+#: model:ir.model.fields,field_description:pescini_crm.field_commission_assignment__id
 #: model:ir.model.fields,field_description:pescini_crm.field_company_classification__id
 msgid "ID"
 msgstr ""
@@ -104,16 +122,19 @@ msgid "Individual"
 msgstr "Individuale"
 
 #. module: pescini_crm
+#: model:ir.model.fields,field_description:pescini_crm.field_commission_assignment____last_update
 #: model:ir.model.fields,field_description:pescini_crm.field_company_classification____last_update
 msgid "Last Modified on"
 msgstr "Ultima modifica in data"
 
 #. module: pescini_crm
+#: model:ir.model.fields,field_description:pescini_crm.field_commission_assignment__write_uid
 #: model:ir.model.fields,field_description:pescini_crm.field_company_classification__write_uid
 msgid "Last Updated by"
 msgstr "Ultimo aggiornamento di"
 
 #. module: pescini_crm
+#: model:ir.model.fields,field_description:pescini_crm.field_commission_assignment__write_date
 #: model:ir.model.fields,field_description:pescini_crm.field_company_classification__write_date
 msgid "Last Updated on"
 msgstr "Ultimo aggiornamento il"
@@ -128,10 +149,29 @@ msgid "Marketing consensus"
 msgstr "Consenso Marketing"
 
 #. module: pescini_crm
+#: model:ir.model.fields,field_description:pescini_crm.field_commission_assignment__name
 #: model:ir.model.fields,field_description:pescini_crm.field_company_classification__name
 #: model:ir.model.fields,help:pescini_crm.field_company_classification__name
 msgid "Name"
 msgstr "Nome"
+
+#. module: pescini_crm
+#. odoo-python
+#: code:addons/pescini_crm/models/commission_assignment.py:0
+#: code:addons/pescini_crm/models/commission_assignment.py:0
+#, python-format
+msgid "New Commission Assignment"
+msgstr ""
+
+#. module: pescini_crm
+#: model:ir.model.fields,field_description:pescini_crm.field_commission_assignment__has_priority
+msgid "Precedenza"
+msgstr ""
+
+#. module: pescini_crm
+#: model:ir.model.fields,field_description:pescini_crm.field_commission_assignment__state_id
+msgid "Provincia"
+msgstr ""
 
 #. module: pescini_crm
 #: model:ir.model.fields.selection,name:pescini_crm.selection__company_classification__company_type__pa
@@ -142,6 +182,13 @@ msgstr "Pubblica Amministrazione"
 #: model:ir.model.fields,field_description:pescini_crm.field_crm_lead__registration_date
 msgid "Registration Date"
 msgstr "Data Registrazione"
+
+#. module: pescini_crm
+#. odoo-python
+#: code:addons/pescini_crm/models/crm_lead.py:0
+#, python-format
+msgid "Select default agent in Commission assignment view."
+msgstr "Seleziona un agente di default nella vista 'Gestione e assegnazione agenti'"
 
 #. module: pescini_crm
 #: model:ir.model.fields,field_description:pescini_crm.field_crm_lead__show_prop
@@ -161,6 +208,11 @@ msgstr "Fatturato totale"
 #, python-format
 msgid "You can only apply this action from a lead."
 msgstr "Puoi applicare questa azione solo da un lead"
+
+#. module: pescini_crm
+#: model:ir.model,name:pescini_crm.model_commission_assignment
+msgid "commission.assignment"
+msgstr ""
 
 #. module: pescini_crm
 #: model:ir.model,name:pescini_crm.model_company_classification

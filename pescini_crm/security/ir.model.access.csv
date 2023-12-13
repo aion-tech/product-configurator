@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_pescini_crm_2,company.classification pescini_user,model_company_classification,base.group_user,1,1,1,1
+access_pescini_crm_2,pescini_crm.commission.assignment,model_commission_assignment,base.group_user,1,1,1,1
+access_pescini_crm_commission_assignment,commission.assignment.pescini_crm_user,model_commission_assignment,base.group_user,1,1,1,1
+access_pescini_crm_company_classification,company.classification.pescini_crm_user,model_company_classification,base.group_user,1,1,1,1

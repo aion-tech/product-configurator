@@ -9,7 +9,7 @@
     "website": "https://aion-tech.it/",
 
     "category": "Sales/CRM",
-    "version": "14.0.1.0.21",
+    "version": "14.0.1.0.22",
 
     "depends": [
         "base",
@@ -22,6 +22,7 @@
         "views/crm_lead_view.xml",
         "views/company_classification.xml",
         # "wizard/crm_opportunity_create_contact.xml",
+        "views/commission_assignments_view.xml",
     ],
     "installable": True,
     "application": False,
