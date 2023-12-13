@@ -1,0 +1,43 @@
+<odoo>
+    <data>
+        <record
+        id="pescini_api_auth_api_key_tree_view"
+        model="ir.ui.view">
+            <field name="name">auth.api.key.tree (in pescini_api)</field>
+            <field name="model">auth.api.key</field>
+            <field
+            name="inherit_id"
+            ref="auth_api_key.auth_api_key_tree_view" />
+            <field
+            name="arch"
+            type="xml">
+                <xpath
+                expr="//field[last()]"
+                position="after">
+                    <field name="jwt_validator_id" />
+                </xpath>
+            </field>
+        </record>
+        <record
+        id="pescini_api_auth_api_key_form_view"
+        model="ir.ui.view">
+            <field name="name">auth.api.key.form (in pescini_api)</field>
+            <field name="model">auth.api.key</field>
+            <field
+            name="inherit_id"
+            ref="auth_api_key.auth_api_key_form_view" />
+            <field
+            name="arch"
+            type="xml">
+                <xpath
+                expr="//field[@name='key']"
+                position="after">
+                    <field
+                    name="jwt_validator_id"
+                    colspan="4"
+                    options="{'no_create': True, 'no_create_edit': True, 'no_edit': True}" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
