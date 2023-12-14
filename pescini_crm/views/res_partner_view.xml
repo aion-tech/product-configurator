@@ -19,6 +19,7 @@
 
         <xpath expr="//field[@name='vat']" position="after">
           <field name="company_classification" />
+          <field name="revenue" />
         </xpath>
 
       </field>
@@ -26,4 +27,3 @@
 
   </data>
 </odoo>
-

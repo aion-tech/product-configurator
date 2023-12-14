@@ -18,3 +18,7 @@ class ResPartner(models.Model):
     company_classification = fields.Many2one(string="Company classification",
                                              comodel_name="company.classification",
                                              store=True)
+
+    # Task PES-38
+    revenue = fields.Float(string="Total revenue",
+                           store=True)

@@ -11,18 +11,7 @@ class Lead2OpportunityPartner(models.TransientModel):
     _description = 'Convert Lead to Opportunity (not in mass)'
 
     def _convert_and_allocate(self, leads, user_ids, team_id=False):
-        self.ensure_one()
-
+        res = super()._convert_and_allocate(leads, user_ids, team_id=False)
         for lead in leads:
-            if lead.active and self.action != 'nothing':
-                self._convert_handle_partner(
-                    lead, self.action, self.partner_id.id or lead.partner_id.id)
-
-            lead.convert_opportunity(lead.partner_id, user_ids=False, team_id=False)
-
-        leads_to_allocate = leads
-        if not self.force_assignment:
-            leads_to_allocate = leads_to_allocate.filtered(lambda lead: not lead.user_id)
-
-        if user_ids:
-            leads_to_allocate._handle_salesmen_assignment(user_ids, team_id=team_id)
+            lead.show_prop = True
+        return res
