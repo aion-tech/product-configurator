@@ -21,12 +21,15 @@ class State(BaseModelOdoo):
 
 class Country(BaseModelOdoo):
     _omodel: str = "res.country"
-    name: str
     code: str
 
     @property
     def _odomain(self) -> List[str | Tuple[str, str, Any]]:
-        return [("code", "=", self.code), ("name", "=", self.name)]
+        return [("code", "=", self.code)]
+
+    @property
+    def _opolicy(self):
+        return "get"
 
 
 class CompanyClassificationType(str, Enum):

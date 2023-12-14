@@ -27,7 +27,7 @@ class PesciniApiTestCrm(PesciniApiTestCommon):
             "zip": "20100",
             "city": "Milano",
             "state": {"name": "Milano", "code": "MI"},
-            "country": {"name": "Italy", "code": "IT"},
+            "country": {"code": "US"},
             "marketing_consensus": True,
         }
 
@@ -53,7 +53,7 @@ class PesciniApiTestCrm(PesciniApiTestCommon):
             "zip": "10121",
             "city": "Torino",
             "state": {"name": "Torino", "code": "TO"},
-            "country": {"name": "Italy", "code": "IT"},
+            "country": {"code": "IT"},
             "marketing_consensus": True,
         }
 
@@ -155,10 +155,6 @@ class PesciniApiTestCrm(PesciniApiTestCommon):
             self.company_vals["state"]["code"],
         )
         self.assertEqual(
-            lead_id.partner_id.country_id.name,
-            self.company_vals["country"]["name"],
-        )
-        self.assertEqual(
             lead_id.partner_id.country_id.code,
             self.company_vals["country"]["code"],
         )
@@ -223,10 +219,6 @@ class PesciniApiTestCrm(PesciniApiTestCommon):
         self.assertEqual(
             lead_id.state_id.code,
             self.company_lead_vals["partner"]["state"]["code"],
-        )
-        self.assertEqual(
-            lead_id.country_id.name,
-            self.company_lead_vals["partner"]["country"]["name"],
         )
         self.assertEqual(
             lead_id.country_id.code,
@@ -325,10 +317,6 @@ class PesciniApiTestCrm(PesciniApiTestCommon):
             self.person_vals["state"]["code"],
         )
         self.assertEqual(
-            existing_partner_id.country_id.name,
-            self.person_vals["country"]["name"],
-        )
-        self.assertEqual(
             existing_partner_id.country_id.code,
             self.person_vals["country"]["code"],
         )
@@ -412,10 +400,6 @@ class PesciniApiTestCrm(PesciniApiTestCommon):
         self.assertEqual(
             lead_id.state_id.code,
             self.person_lead_vals["partner"]["state"]["code"],
-        )
-        self.assertEqual(
-            lead_id.country_id.name,
-            self.person_lead_vals["partner"]["country"]["name"],
         )
         self.assertEqual(
             lead_id.country_id.code,
