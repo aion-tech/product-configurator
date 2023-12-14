@@ -2,13 +2,14 @@ from typing import Dict
 
 from fastapi import status
 from odoo.addons.fastapi import dependencies
+from odoo.addons.fastapi.dependencies import company_id
 from odoo.addons.fastapi.tests.common import FastAPITransactionCase
 from pydantic import BaseModel, Field, computed_field, model_serializer, validator
 from requests import Response
 
 from ..routers.pescini import pescini_api_router
 from ..schemas.partner import Partner
-from .common import PesciniApiTestCommon
+from .common import COMPANY_1_VAT, COMPANY_2_VAT, PesciniApiTestCommon
 
 
 class PesciniApiTestCrm(PesciniApiTestCommon):
@@ -67,17 +68,19 @@ class PesciniApiTestCrm(PesciniApiTestCommon):
             "company_name": "Hogwarts School of Witchcraft and Wizardry",
         }
 
-    def _post_crm(self, vals):
+    def _post_crm(self, vals, company: str = COMPANY_1_VAT):
         """
         execute a post request to /crm,
         assert its reponse,
         return the id of the created crm.lead
         """
         token = self._get_token(self.crm_api_key.key).json()["token"]
-        res = self._post(
+        res = self._request(
+            "post",
             token,
             "/crm",
             vals,
+            company=company,
         )
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.json()["status"], "ok")
@@ -454,3 +457,60 @@ class PesciniApiTestCrm(PesciniApiTestCommon):
             existing_partner_id.marketing_consensus,
             False,
         )
+
+    def test_multi_company_crm_lead(self):
+        # company1
+        lead = self._post_crm(self.person_lead_vals)
+        lead_id = self.env["crm.lead"].browse(lead)
+        self.assertEqual(
+            lead_id.company_id.id,
+            self.company1.id,
+        )
+        self.assertFalse(lead_id.partner_id)
+
+        # company2
+        lead2 = self._post_crm(
+            self.person_lead_vals,
+            company=COMPANY_2_VAT,
+        )
+        lead_id2 = self.env["crm.lead"].browse(lead2)
+        self.assertEqual(
+            lead_id2.company_id.id,
+            self.company2.id,
+        )
+        self.assertFalse(lead_id2.partner_id)
+
+    def test_multi_company_crm_lead_no_company_in_headers(self):
+        """
+        If no company is specified in the request headers,
+        the lead should be created using the default company.
+        (see https://github.com/OCA/rest-framework/pull/365/files)
+        """
+        token = self._get_token(self.crm_api_key.key).json()["token"]
+        with self._create_pescini_test_client() as test_client:
+            test_client.headers.update(
+                {
+                    "Authorization": f"Bearer {token}",
+                    # No company in headers
+                    # "X-Odoo-Company": COMPANY_2_VAT,
+                }
+            )
+            # mock odoo.addons.fastapi_company_id_header_dependency.dependencies.company_id_from_header
+            test_client.app.dependency_overrides[company_id] = (
+                lambda: test_client.headers.get("X-Odoo-Company")
+                and self.env["res.company"]
+                .sudo()
+                .search([("vat", "=", test_client.headers.get("X-Odoo-Company"))])
+                .id
+                or None
+            )
+            response = test_client.post(
+                "/crm",
+                json=self.person_lead_vals,
+            )
+            lead_id = self.env["crm.lead"].browse(response.json()["id"])
+
+            self.assertEqual(
+                lead_id.company_id.id,
+                self.env.ref("pescini_api.pescini_endpoint").user_id.company_id.id,
+            )

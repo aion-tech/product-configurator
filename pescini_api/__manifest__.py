@@ -18,6 +18,7 @@
         "product",
         "pescini_crm",
         "pydantic_base_model_odoo",
+        "fastapi_company_id_header_dependency",
     ],
     "data": [
         "data/pescini_fastapi_data.xml",
