@@ -21,12 +21,15 @@ class State(BaseModelOdoo):
 
 class Country(BaseModelOdoo):
     _omodel: str = "res.country"
-    name: str
     code: str
 
     @property
     def _odomain(self) -> List[str | Tuple[str, str, Any]]:
-        return [("code", "=", self.code), ("name", "=", self.name)]
+        return [("code", "=", self.code)]
+
+    @property
+    def _opolicy(self):
+        return "get"
 
 
 class CompanyClassificationType(str, Enum):
@@ -61,7 +64,7 @@ class Contact(BaseModelOdoo):
     _omodel: str = "res.partner"
     type: Literal["contact"]
     name: str
-    function: str = Field(..., alias="role_type")
+    function: Optional[str] = Field(default=None, alias="role_type")
     email: str
     phone: str
 
@@ -76,7 +79,7 @@ class Contact(BaseModelOdoo):
 
 class ContactAddress(BaseModelOdoo):
     _omodel: str = "res.partner"
-    type: str
+    type: Literal["delivery", "invoice"]
     name: str
     email: str
     phone: str
@@ -131,6 +134,7 @@ class Partner(BaseModelOdoo):
     )
     email: Optional[str] = None
     phone: Optional[str] = None
+    function: Optional[str] = Field(default=None, alias="role_type")
     vat: Optional[str] = Field(default=None, description="Partita IVA")
     street: str = Field(..., description="Via/piazza e numero civico.")
     zip: str
@@ -182,10 +186,9 @@ class Partner(BaseModelOdoo):
     def _odomain(self) -> List[str | Tuple[str, str, Any]]:
         return ["|", ("email", "=", self.email), ("phone", "=", self.phone)]
 
-    def o_model_dump(
-        self,
-        env: Environment,
-        is_x2many: bool = False,
-    ):
-        res = super().o_model_dump(env, is_x2many)
-        return res
+    def _o_model_dump_postserialize_hook(self, rec: int, env: Environment) -> int:
+        rec = super()._o_model_dump_postserialize_hook(rec, env)
+        # Always update marketing_consensus regardless of _opolicy
+        partner_id = env["res.partner"].browse(rec)
+        partner_id.marketing_consensus = self.marketing_consensus
+        return rec

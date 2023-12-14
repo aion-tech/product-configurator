@@ -76,10 +76,10 @@ class CrmLead(BaseModelOdoo):
         return "create"
 
     def _o_model_dump_preprocess_hook(self) -> Dict[str, Any]:
+        vals: Dict[str, Any] = super()._o_model_dump_preprocess_hook()
         # if no partner_id is found, self.partner_id._opolicy will be set to "skip".
         # In this case the partner vals should be written onto the crm.lead record.
         # It'll be up to odoo users to decide whether to create new opportunities from the crm.lead.
-        vals = dict()
         partner_id = self._oenv["res.partner"].search(self.partner_id._odomain)
         if not partner_id:
             vals = self.partner_id.model_dump()
@@ -97,6 +97,8 @@ class CrmLead(BaseModelOdoo):
             vals[
                 "type"
             ] = "lead"  # TODO dynamic based on partner_id existing/not existing?
+            vals["function"] = self.partner_id.function
+
             # remove fields not needed in crm.lead
             vals.pop("vat")
             vals.pop("child_ids")
