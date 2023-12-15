@@ -192,3 +192,20 @@ class Partner(BaseModelOdoo):
         partner_id = env["res.partner"].browse(rec)
         partner_id.marketing_consensus = self.marketing_consensus
         return rec
+
+    def _o_model_dump_postprocess_hook(self, vals: Dict[str, Any]) -> Dict[str, Any]:
+        vals = super()._o_model_dump_postprocess_hook(vals)
+        # raise if partner is linked to an active odoo user.
+        # We don't want external parties to be able to change
+        # users data and it doesn't make sense to call the api
+        # using a user's data.
+        existing_partner = self._oenv["res.partner"].search(self._odomain)
+        existing_user = existing_partner and self._oenv["res.users"].search(
+            [("partner_id", "=", existing_partner.id)]
+        )
+        if existing_user and existing_user.active:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Cannot update a user's partner data",
+            )
+        return vals

@@ -514,3 +514,33 @@ class PesciniApiTestCrm(PesciniApiTestCommon):
                 lead_id.company_id.id,
                 self.env.ref("pescini_api.pescini_endpoint").user_id.company_id.id,
             )
+
+    def test_update_user_partner(self):
+        """
+        Trying to update a partner linked to an active user should raise.
+        """
+        self.env["res.users"].with_context(
+            mail_create_nolog=True,
+            mail_create_nosubscribe=True,
+            mail_notrack=True,
+            no_reset_password=True,
+            tracking_disable=True,
+        ).create(
+            {
+                "name": "Hermione Granger",
+                "login": "h.granger@hogwarts.edu",
+                "email": "h.granger@hogwarts.edu",
+            }
+        )
+        token = self._get_token(self.crm_api_key.key).json()["token"]
+        res = self._request(
+            "post",
+            token,
+            "/crm",
+            self.person_lead_vals,
+        )
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(
+            res.json()["detail"],
+            "Cannot update a user's partner data",
+        )
