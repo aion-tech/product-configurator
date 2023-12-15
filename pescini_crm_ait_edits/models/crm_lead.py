@@ -46,8 +46,10 @@ class CrmLead(models.Model):
                 res = self._prepare_both_existing(
                     force_partner, force_company_id)
                 # Task PES-27
-                res['marketing_consensus'] = self.marketing_consensus
-                force_company_id.company_classification = self.company_classification.id
+                res['marketing_consensus'] = lead.marketing_consensus
+                force_company_id.company_classification = lead.company_classification.id
+                # Task PES-38
+                force_company_id.revenue = lead.revenue
 
             elif force_partner_id and not force_company_id:
                 force_partner = self.env[RES_PARTNER].sudo().browse(
@@ -56,18 +58,28 @@ class CrmLead(models.Model):
                     res = self._prepare_customer_values_with_parent(
                         force_partner)
                     # Task PES-27
-                    res['marketing_consensus'] = self.marketing_consensus
-                    force_partner.parent_id.company_classification = self.company_classification.id
+                    res['marketing_consensus'] = lead.marketing_consensus
+                    force_partner.parent_id.company_classification = lead.company_classification.id
+                    # Task PES-38
+                    force_partner.parent_id.revenue = lead.revenue
                 else:
-                    res, contact_id = self._prepare_customer_values_no_parent(
+                    res, contact_id = lead._prepare_customer_values_no_parent(
                         force_partner)
                     # Task PES-27
                     if contact_id:
                         contact_id.marketing_consensus = lead.marketing_consensus
+                        contact_id.revenue = False
+                        res['revenue'] = lead.revenue
+                        res['company_classification'] = lead.company_classification.id if lead.company_classification else False
                     else:
                         res['marketing_consensus'] = lead.marketing_consensus
+                        # Task PES-38
+                        res['revenue'] = lead.revenue
+
                     if lead.company_classification:
                         res['company_classification'] = lead.company_classification.id
+                        # Task PES-38
+                        res['revenue'] = lead.revenue
 
             lead.partner_id = contact_id.id if contact_id else force_partner_id
             if 'lang_id' in res.keys():
@@ -77,11 +89,35 @@ class CrmLead(models.Model):
             lead.partner_id.write(res) if res else False
             if not lead.partner_id and create_missing:
                 partner = lead._create_customer()
-                # Task PES-27                
+                # Task PES-27
                 if not partner.parent_id:
                     partner.company_classification = self.company_classification.id
+                    # Task PES-38
+                    partner.revenue = self.revenue
                 else:
                     partner.parent_id.company_classification = self.company_classification.id
                     partner.parent_id.marketing_consensus = False
+                    # Task PES-38
+                    partner.parent_id.revenue = self.revenue
+                    partner.revenue = False
                 partner.marketing_consensus = self.marketing_consensus
                 lead.partner_id = partner.id
+            partner = lead.partner_id
+
+            # Task PES-33 
+            partner.agent_ids = [(6, 0, [lead.agent.id])
+                                 ] if lead.agent else False
+            if partner.parent_id:
+                partner.parent_id.company_classification = lead.company_classification.id if lead.company_classification else False
+                partner.company_classification = False
+
+                partner.parent_id.revenue = lead.revenue
+                partner.revenue = False
+
+                # Task PES-33
+                partner.parent_id.agent_ids = [
+                    (6, 0, [lead.agent.id])] if lead.agent else False
+                partner.agent_ids = False
+
+                # partner.parent_id.marketing_consensus = False
+                # partner.marketing_consensus = lead.marketing_consensus
