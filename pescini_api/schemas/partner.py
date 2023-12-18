@@ -127,8 +127,8 @@ class Partner(BaseModelOdoo):
             "La ragione sociale dell’azienda o il nome e cognome del privato."
         ),
     )
-    company_classification: CompanyClassification = Field(
-        ...,
+    company_classification: Optional[CompanyClassification] = Field(
+        default=None,
         description="Riportare la tipologia specifica di azienda o di privato cittadino.",
         alias="partner_type",
     )
@@ -136,10 +136,17 @@ class Partner(BaseModelOdoo):
     phone: Optional[str] = None
     function: Optional[str] = Field(default=None, alias="role_type")
     vat: Optional[str] = Field(default=None, description="Partita IVA")
-    street: str = Field(..., description="Via/piazza e numero civico.")
+    street: Optional[str] = Field(
+        default=None,
+        description="Via/piazza e numero civico.",
+    )
     zip: str
-    city: str
-    state_id: State = Field(..., description="Provincia", alias="state")
+    city: Optional[str]
+    state_id: Optional[State] = Field(
+        default=None,
+        description="Provincia",
+        alias="state",
+    )
     country_id: Country = Field(..., alias="country")
     marketing_consensus: bool = Field(default=False)
     child_ids: Optional[List[Contact | DeliveryAddress | InvoiceAddress]] = Field(

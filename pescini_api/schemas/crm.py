@@ -61,7 +61,7 @@ class CrmLead(BaseModelOdoo):
     name: str = Field(..., alias="title")
     description: str = Field(..., alias="notes")
     source_id: Source = Field(..., alias="source")
-    campaign_id: Campaign = Field(..., alias="campaign")
+    campaign_id: Optional[Campaign] = Field(default=None, alias="campaign")
     partner_id: Partner = Field(..., alias="partner")
     partner_name: Optional[str] = Field(
         default=None,
@@ -90,9 +90,10 @@ class CrmLead(BaseModelOdoo):
             vals.pop("state_id")
             vals["state_id"] = self.partner_id.state_id.o_model_dump(self._oenv)
             vals.pop("company_classification")
-            vals[
-                "company_classification"
-            ] = self.partner_id.company_classification.o_model_dump(self._oenv)
+            if self.partner_id.company_classification:
+                vals[
+                    "company_classification"
+                ] = self.partner_id.company_classification.o_model_dump(self._oenv)
             vals["contact_name"] = self.partner_id.name
             vals[
                 "type"
