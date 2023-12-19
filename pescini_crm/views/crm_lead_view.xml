@@ -31,6 +31,11 @@
         <xpath expr="//group[5]/field[1]" position="before">
           <field name="area_manager_id"/>
         </xpath>
+
+        <!-- Ticket PES-65 -->
+        <xpath expr="//sheet[1]/group[1]/group[4]/field[1]" position="before">
+          <field name="area_manager_id"/>
+        </xpath>
         
         <!-- Task PES-38 -->
         <xpath expr="//div[@id='probability'][1]" position="replace">
