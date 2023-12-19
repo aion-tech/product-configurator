@@ -9,12 +9,13 @@
     "website": "https://aion-tech.it/",
 
     "category": "Sales/CRM",
-    "version": "14.0.1.0.22",
+    "version": "14.0.1.0.23",
 
     "depends": [
         "base",
         "crm",
         "account_commission",
+        "sales_team",
     ],
     "data": [
         "security/ir.model.access.csv",
@@ -23,7 +24,13 @@
         "views/company_classification.xml",
         # "wizard/crm_opportunity_create_contact.xml",
         "views/commission_assignments_view.xml",
+        "views/crm_team_view.xml",
     ],
+
+    # "qweb": [
+    #     "static/src/js/meal_voucher_button_in_tree.js",
+    #     ],
+
     "installable": True,
     "application": False,
 }

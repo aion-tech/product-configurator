@@ -26,6 +26,11 @@ class CrmLead(models.Model):
     _inherit = CRM_LEAD
     _description = CRM_LEAD
 
+    # Task PES-65
+    area_manager_id = fields.Many2one(comodel_name="res.users",
+                                      string="Area Manager",
+                                      related="team_id.user_id")
+
     # Task PES-33
     agent = fields.Many2one(comodel_name="res.partner",
                             string="Agent",

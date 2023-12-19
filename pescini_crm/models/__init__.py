@@ -5,3 +5,4 @@ from . import crm_lead_opportunity
 from . import res_partner
 from . import company_classification
 from . import commission_assignment
+from . import crm_team

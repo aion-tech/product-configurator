@@ -26,6 +26,11 @@
         <xpath expr="//div[@class='oe_edit_only d-md-flex align-items-center'][1]/label[1]" position="replace">
           <label for="probability" attrs="{'invisible': [('show_prop', '=', False)]}"/>
         </xpath>
+
+        <!-- Ticket PES-65 -->
+        <xpath expr="//group[5]/field[1]" position="before">
+          <field name="area_manager_id"/>
+        </xpath>
         
         <!-- Task PES-38 -->
         <xpath expr="//div[@id='probability'][1]" position="replace">
