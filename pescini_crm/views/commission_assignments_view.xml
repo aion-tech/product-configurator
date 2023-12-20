@@ -1,16 +1,12 @@
 <odoo>
   <data>
-
     <!-- Task PES-48 -->
     <!-- Tree(list) View -->
     <record id="commission_assignments_view_tree" model="ir.ui.view">
         <field name="name">commission.assignment.view.tree</field>
         <field name="model">commission.assignment</field>
         <field name="arch" type="xml">
-            <tree editable="bottom" create="1" edit="1">
-                <header>
-                    <button name="action_create_if_not_exist" string="Generate agent assignments" type="object"/>
-                </header>
+            <tree editable="bottom" create="1" edit="1" js_class="commission_assignment_button_in_list">
                 <field name="name" invisible="1"/>
                 <field name="agent"/>
                 <field name="has_priority"/>
@@ -27,6 +23,7 @@
         <field name="name">Commission Assignments</field>
         <field name="res_model">commission.assignment</field>
         <field name="view_mode">tree</field>
+        <field name="domain">[('company_id', '=', allowed_company_ids[0])]</field>
     </record>
 
     <!-- Task PES-48 -->
@@ -34,7 +31,6 @@
               id="commission_assignments_menu" 
               parent="commission.menu_commission_management" 
               action="commission_assignments_action"/>
-
   </data>
 </odoo>
 

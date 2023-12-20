@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates
+id="template"
+xml:space="preserve">
+    <t t-name="pescini_crm.commission_assignment.generate.button">
+        <button class="btn btn-primary commission_assignment_button" type="button">
+            Genera Mancanti
+        </button>
+    </t>
+</templates>
