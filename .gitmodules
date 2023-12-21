@@ -86,3 +86,8 @@
 	path = aion-tech/ait_crm_addons
 	url = git@github.com:aion-tech/ait_crm_addons.git
 	branch = 16.0
+
+[submodule "OCA/mis-builder"]
+	path = OCA/mis-builder
+	url = git@github.com:OCA/mis-builder.git
+	branch = 16.0
