@@ -22,6 +22,11 @@
           <field name="revenue" />
         </xpath>
 
+        <!-- Task PES-65 -->
+        <xpath expr="//field[@name='team_id']" position="before">
+          <field name="area_manager_id" />
+        </xpath>
+
       </field>
     </record>
 

@@ -6,14 +6,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e-20231106\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-13 16:21+0000\n"
-"PO-Revision-Date: 2023-12-13 16:21+0000\n"
+"POT-Creation-Date: 2023-12-19 08:54+0000\n"
+"PO-Revision-Date: 2023-12-19 08:54+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: pescini_crm
+#: model_terms:ir.ui.view,arch_db:pescini_crm.crm_team_view_form_inherit
+msgid "<i class=\"fa fa-envelope me-1\" role=\"img\" aria-label=\"Email\" title=\"Email\"/>"
+msgstr ""
 
 #. module: pescini_crm
 #: model_terms:ir.ui.view,arch_db:pescini_crm.crm_lead_view_form_inherit
@@ -25,6 +30,29 @@ msgstr ""
 #: model:ir.model.fields,field_description:pescini_crm.field_crm_lead__agent
 msgid "Agent"
 msgstr "Agente"
+
+#. module: pescini_crm
+#: model:ir.model.fields,field_description:pescini_crm.field_crm_team__agent_ids
+#: model_terms:ir.ui.view,arch_db:pescini_crm.crm_team_view_form_inherit
+msgid "Agents"
+msgstr "Agenti"
+
+#. module: pescini_crm
+#: model_terms:ir.ui.view,arch_db:pescini_crm.commission_assignments_view_tree
+msgid "All"
+msgstr "Tutti"
+
+#. module: pescini_crm
+#: model_terms:ir.ui.view,arch_db:pescini_crm.crm_team_view_form_inherit
+msgid "Avatar"
+msgstr ""
+
+#. module: pescini_crm
+#. odoo-javascript
+#: code:addons/pescini_crm/static/src/js/meal_voucher_button_in_tree.js:0
+#, python-format
+msgid "Buoni pasto ricalcolati!"
+msgstr ""
 
 #. module: pescini_crm
 #: model:ir.actions.act_window,name:pescini_crm.commission_assignments_action
@@ -42,17 +70,17 @@ msgstr "Azienda"
 #: model:ir.actions.act_window,name:pescini_crm.company_classification_view_action
 #: model:ir.ui.menu,name:pescini_crm.company_classification_menu
 msgid "Company Classification"
-msgstr "Classificazione aziendale"
+msgstr "Categoria Aziendale"
 
 #. module: pescini_crm
 #: model_terms:ir.ui.view,arch_db:pescini_crm.company_classification_view_form
 msgid "Company Classification Form"
-msgstr "Modulo di classificazione aziendale"
+msgstr "Modulo di Categoria Aziendale"
 
 #. module: pescini_crm
 #: model_terms:ir.ui.view,arch_db:pescini_crm.company_classification_view_search
 msgid "Company Classification Search"
-msgstr "Ricerca per classificazione aziendale"
+msgstr "Ricerca per Categoria Aziendale"
 
 #. module: pescini_crm
 #: model:ir.model.fields,field_description:pescini_crm.field_company_classification__company_type
@@ -65,7 +93,7 @@ msgstr "Tipo di azienda"
 #: model:ir.model.fields,field_description:pescini_crm.field_res_partner__company_classification
 #: model:ir.model.fields,field_description:pescini_crm.field_res_users__company_classification
 msgid "Company classification"
-msgstr "Classificazione aziendale"
+msgstr "Categoria Aziendale"
 
 #. module: pescini_crm
 #: model:ir.model,name:pescini_crm.model_crm_lead2opportunity_partner
@@ -188,7 +216,8 @@ msgstr "Data Registrazione"
 #: code:addons/pescini_crm/models/crm_lead.py:0
 #, python-format
 msgid "Select default agent in Commission assignment view."
-msgstr "Seleziona un agente di default nella vista 'Gestione e assegnazione agenti'"
+msgstr ""
+"Seleziona un agente di default nella vista 'Gestione e assegnazione agenti'"
 
 #. module: pescini_crm
 #: model:ir.model.fields,field_description:pescini_crm.field_crm_lead__show_prop
@@ -223,6 +252,11 @@ msgstr ""
 #: model:ir.model,name:pescini_crm.model_crm_lead
 msgid "crm.lead"
 msgstr "Contatto/Opportunità"
+
+#. module: pescini_crm
+#: model:ir.model,name:pescini_crm.model_crm_team
+msgid "crm.team"
+msgstr ""
 
 #. module: pescini_crm
 #: model:ir.model,name:pescini_crm.model_res_partner

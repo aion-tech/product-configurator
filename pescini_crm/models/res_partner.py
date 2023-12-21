@@ -22,3 +22,8 @@ class ResPartner(models.Model):
     # Task PES-38
     revenue = fields.Float(string="Total revenue",
                            store=True)
+
+    # Task PES-65
+    area_manager_id = fields.Many2one(comodel_name="res.users",
+                                      string="Area Manager",
+                                      related="team_id.user_id")

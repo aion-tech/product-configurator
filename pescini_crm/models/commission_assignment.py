@@ -46,40 +46,39 @@ class CommissionAssignment(models.Model):
 
     # Task PES-48
 
-    def action_create_if_not_exist(self):
+    def action_create_if_not_exist(self):        
         # Iterate through each record in the current recordset
-        for record in self:
-            # Retrieve all commission assignments and agents with elevated privileges
-            assignments = self.env[COMMISSION_ASSIGNMENT].sudo().search([])
-            agents = self.env[RES_PARTNER].sudo().search(
-                [('company_id', '=', self.env.company.id), ('agent', '=', True)])
+        # Retrieve all commission assignments and agents with elevated privileges
+        assignments = self.env[COMMISSION_ASSIGNMENT].sudo().search([])
+        agents = self.env[RES_PARTNER].sudo().search(
+            [('company_id', '=', self.env.company.id), ('agent', '=', True)])
 
-            # Get the names of all agents
-            agent_names = agents.mapped('name')
+        # Get the names of all agents
+        agent_names = agents.mapped('name')
 
-            # Remove names of agents already assigned to commission assignments
-            for assign in assignments:
-                if assign.agent.name in agent_names:
-                    agent_names.remove(assign.agent.name)
+        # Remove names of agents already assigned to commission assignments
+        for assign in assignments:
+            if assign.agent.name in agent_names:
+                agent_names.remove(assign.agent.name)
 
-            # Iterate through remaining agent names to create new commission assignments
-            for name in agent_names:
-                # Filter the agents to get the one with the matching name
-                agent_id = agents.filtered(lambda ag: ag.name == name)
+        # Iterate through remaining agent names to create new commission assignments
+        for name in agent_names:
+            # Filter the agents to get the one with the matching name
+            agent_id = agents.filtered(lambda ag: ag.name == name)
 
-                # Define values for the new commission assignment
-                new_assignment_vals = {
-                    'name': _('New Commission Assignment'),
-                    'agent': agent_id.id,
-                    'has_priority': False,
-                    'company_classification_id': False,
-                    'state_id': False,
-                    'company_id': agents.company_id.id or self.env.company.id
-                }
+            # Define values for the new commission assignment
+            new_assignment_vals = {
+                'name': _('New Commission Assignment'),
+                'agent': agent_id.id,
+                'has_priority': False,
+                'company_classification_id': False,
+                'state_id': False,
+                'company_id': agents.company_id.id or self.env.company.id
+            }
 
-                # Create a new commission assignment with the specified values
-                self.env[COMMISSION_ASSIGNMENT].sudo().create(
-                    new_assignment_vals)
+            # Create a new commission assignment with the specified values
+            self.env[COMMISSION_ASSIGNMENT].sudo().create(
+                new_assignment_vals)
 
     # Task PES-48
 
