@@ -88,7 +88,8 @@ class CrmLead(BaseModelOdoo):
             vals.pop("country_id")
             vals["country_id"] = self.partner_id.country_id.o_model_dump(self._oenv)
             vals.pop("state_id")
-            vals["state_id"] = self.partner_id.state_id.o_model_dump(self._oenv)
+            if self.partner_id.state_id:
+                vals["state_id"] = self.partner_id.state_id.o_model_dump(self._oenv)
             vals.pop("company_classification")
             if self.partner_id.company_classification:
                 vals[
