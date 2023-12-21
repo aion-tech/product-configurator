@@ -181,6 +181,8 @@ class PesciniApiTestCrm(PesciniApiTestCommon):
             lead_id.campaign_id.name,
             self.company_lead_vals["campaign"]["title"],
         )
+        self.assertFalse(lead_id.user_id)
+        self.assertFalse(lead_id.team_id)
 
     def test_create_lead_new_company(self):
         lead = self._post_crm(self.company_lead_vals)
@@ -247,6 +249,8 @@ class PesciniApiTestCrm(PesciniApiTestCommon):
             lead_id.campaign_id.name,
             self.company_lead_vals["campaign"]["title"],
         )
+        self.assertFalse(lead_id.user_id)
+        self.assertFalse(lead_id.team_id)
 
     def test_create_lead_existing_person(self):
         company_id = self.env["res.partner"].create(
@@ -343,6 +347,8 @@ class PesciniApiTestCrm(PesciniApiTestCommon):
             lead_id.campaign_id.name,
             self.person_lead_vals["campaign"]["title"],
         )
+        self.assertFalse(lead_id.user_id)
+        self.assertFalse(lead_id.team_id)
 
     def test_create_lead_new_person(self):
         lead = self._post_crm(self.person_lead_vals)
@@ -428,6 +434,8 @@ class PesciniApiTestCrm(PesciniApiTestCommon):
             lead_id.campaign_id.name,
             self.person_lead_vals["campaign"]["title"],
         )
+        self.assertFalse(lead_id.user_id)
+        self.assertFalse(lead_id.team_id)
 
     def test_partner_postserialize_hook(self):
         existing_partner_id = self.env["res.partner"].create(
