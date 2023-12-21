@@ -107,3 +107,14 @@ class CrmLead(BaseModelOdoo):
             vals.pop("is_company")
             vals.pop("company_type")
         return vals
+
+    def _o_model_dump_postserialize_hook(self, rec: int, env: Environment) -> int:
+        rec_id = env[self._omodel].browse([rec])
+        # sales person and sales team are automatically set
+        # through sales team automatic assignation rules.
+        # Leave them empty.
+        rec_id.team_id = False
+        company_id = rec_id.company_id
+        rec_id.user_id = False
+        rec_id.company_id = company_id.id
+        return rec
