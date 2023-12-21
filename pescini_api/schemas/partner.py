@@ -65,8 +65,8 @@ class Contact(BaseModelOdoo):
     type: Literal["contact"]
     name: str
     function: Optional[str] = Field(default=None, alias="role_type")
-    email: str
-    phone: str
+    email: Optional[str]
+    phone: Optional[str]
 
     @property
     def _odomain(self) -> List[str | Tuple[str, str, Any]]:
