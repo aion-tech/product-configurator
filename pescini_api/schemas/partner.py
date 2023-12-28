@@ -65,14 +65,18 @@ class Contact(BaseModelOdoo):
     type: Literal["contact"]
     name: str
     function: Optional[str] = Field(default=None, alias="role_type")
-    email: Optional[str]
-    phone: Optional[str]
+    email: Optional[str] = None
+    phone: Optional[str] = None
 
     @property
     def _odomain(self) -> List[str | Tuple[str, str, Any]]:
         return [
             "|",
+            "&",
+            ("email", "not in", ("", False, None)),
             ("email", "=", self.email),
+            "&",
+            ("phone", "not in", ("", False, None)),
             ("phone", "=", self.phone),
         ]
 
@@ -93,7 +97,11 @@ class ContactAddress(BaseModelOdoo):
     def _odomain(self) -> List[str | Tuple[str, str, Any]]:
         return [
             "|",
+            "&",
+            ("email", "not in", ("", False, None)),
             ("email", "=", self.email),
+            "&",
+            ("phone", "not in", ("", False, None)),
             ("phone", "=", self.phone),
         ]
 
@@ -141,7 +149,7 @@ class Partner(BaseModelOdoo):
         description="Via/piazza e numero civico.",
     )
     zip: str
-    city: Optional[str]
+    city: Optional[str] = None
     state_id: Optional[State] = Field(
         default=None,
         description="Provincia",

@@ -79,10 +79,12 @@ class CrmLead(BaseModelOdoo):
         vals: Dict[str, Any] = super()._o_model_dump_preprocess_hook()
         # if no partner_id is found, self.partner_id._opolicy will be set to "skip".
         # In this case the partner vals should be written onto the crm.lead record.
-        # It'll be up to odoo users to decide whether to create new opportunities from the crm.lead.
+        # It'll be up to odoo users to decide whether to create new opportunities
+        # from the crm.lead.
         partner_id = self._oenv["res.partner"].search(self.partner_id._odomain)
         if not partner_id:
             vals = self.partner_id.model_dump()
+            vals["type"] = "lead"
             # adapt field names to crm.lead field names
             vals["email_from"] = vals.pop("email")
             vals.pop("country_id")
@@ -96,17 +98,36 @@ class CrmLead(BaseModelOdoo):
                     "company_classification"
                 ] = self.partner_id.company_classification.o_model_dump(self._oenv)
             vals["contact_name"] = self.partner_id.name
-            vals[
-                "type"
-            ] = "lead"  # TODO dynamic based on partner_id existing/not existing?
             vals["function"] = self.partner_id.function
+
+            # Save contacts data when saving partner data onto che crm.lead.
+            # Only write values taken from the first contact & that are emtpy
+            # on the partner. :-/
+            contact_lead_fields_map = {
+                "function": "function",
+                "email": "email_from",
+                "phone": "phone",
+                "name": "contact_name",
+            }
+            for field in contact_lead_fields_map.keys():
+                if (
+                    getattr(self.partner_id, field) is None
+                    or getattr(self.partner_id, field) == ""
+                ):
+                    if self.partner_id.child_ids:
+                        first_contact = self.partner_id.child_ids[0]
+                        vals[contact_lead_fields_map[field]] = getattr(
+                            first_contact, field
+                        )
 
             # remove fields not needed in crm.lead
             vals.pop("vat")
             vals.pop("child_ids")
+
             # remove computed fields
             vals.pop("is_company")
             vals.pop("company_type")
+
         return vals
 
     def _o_model_dump_postserialize_hook(self, rec: int, env: Environment) -> int:

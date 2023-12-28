@@ -552,3 +552,39 @@ class PesciniApiTestCrm(PesciniApiTestCommon):
             res.json()["detail"],
             "Cannot update a user's partner data",
         )
+
+    def test_lead_creation_with_child_ids(self):
+        # if no res.partner is found, vals should be written onto the crm.lead record.
+        # Empty partner fields should be populated with data from the first contact.
+        contact_vals = {
+            "name": "Ron Weasley",
+            "email": "r.weasley@hogwarts.edu",
+            "role_type": "Gryffindor Student",
+            "type": "contact",
+        }
+
+        self.company_lead_vals["partner"].update(
+            dict(
+                name="",
+                email="",
+                contacts=[contact_vals],
+            )
+        )
+        lead = self._post_crm(self.company_lead_vals)
+        lead_id = self.env["crm.lead"].browse(lead)
+        # partner doesn't exist yet.
+        # no partner should've been linked to newly created crm.lead
+        self.assertFalse(lead_id.partner_id)
+
+        self.assertEqual(
+            lead_id.contact_name,
+            contact_vals["name"],
+        )
+        self.assertEqual(
+            lead_id.email_from,
+            contact_vals["email"],
+        )
+        self.assertEqual(
+            lead_id.function,
+            contact_vals["role_type"],
+        )
