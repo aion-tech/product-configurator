@@ -4,6 +4,7 @@ OCA/l10n-italy:
     OCA: git@github.com:OCA/l10n-italy.git
   merges:
   - OCA 16.0
+  - OCA refs/pull/3599/head
   fetch_all:
   - OCA
   target: origin 16.0-pes
