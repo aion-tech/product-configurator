@@ -91,3 +91,27 @@
 	path = OCA/mis-builder
 	url = git@github.com:OCA/mis-builder.git
 	branch = 16.0
+[submodule "OCA/connector"]
+	path = OCA/connector
+	url = git@github.com:OCA/connector.git
+	branch = 16.0
+[submodule "OCA/web-api"]
+	path = OCA/web-api
+	url = git@github.com:OCA/web-api.git
+	branch = 16.0
+[submodule "OCA/server-auth"]
+	path = OCA/server-auth
+	url = git@github.com:OCA/server-auth.git
+	branch = 16.0
+[submodule "aion-tech/ait_server_auth"]
+	path = aion-tech/ait_server_auth
+	url = git@github.com:aion-tech/ait_server_auth.git
+	branch = 16.0
+[submodule "aion-tech/ait_rest_framework"]
+	path = aion-tech/ait_rest_framework
+	url = git@github.com:aion-tech/ait_rest_framework.git
+	branch = 16.0
+[submodule "OCA/rest-framework"]
+	path = OCA/rest-framework
+	url = git@github.com:OCA/rest-framework.git
+	branch = 16.0
