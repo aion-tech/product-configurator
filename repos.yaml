@@ -8,6 +8,7 @@ OCA/l10n-italy:
   - OCA refs/pull/3599/head
   - mktsrl refs/pull/8/head
   - OCA refs/pull/3629/head
+  - OCA refs/pull/3823/head
   fetch_all:
   - OCA
   target: origin 16.0-pes-test
