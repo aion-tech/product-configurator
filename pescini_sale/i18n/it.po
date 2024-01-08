@@ -1,0 +1,85 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* pescini_sale
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0+e-20231106\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-08 10:44+0000\n"
+"PO-Revision-Date: 2024-01-08 10:44+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: pescini_sale
+#: model:ir.actions.act_window,name:pescini_sale.sale_conai_action_window
+#: model:ir.model.fields,field_description:pescini_sale.field_product_product__conai_id
+#: model:ir.model.fields,field_description:pescini_sale.field_product_template__conai_id
+#: model:ir.ui.menu,name:pescini_sale.sale_conai_assignments_menu
+#: model_terms:ir.ui.view,arch_db:pescini_sale.sale_conai_form_view
+msgid "Conai"
+msgstr ""
+
+#. module: pescini_sale
+#: model_terms:ir.ui.view,arch_db:pescini_sale.sale_conai_search_view
+msgid "Conai Search"
+msgstr "Conai Ricerca"
+
+#. module: pescini_sale
+#: model:ir.model.fields,field_description:pescini_sale.field_sale_conai__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: pescini_sale
+#: model:ir.model.fields,field_description:pescini_sale.field_sale_conai__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: pescini_sale
+#: model:ir.model.fields,field_description:pescini_sale.field_sale_conai__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: pescini_sale
+#: model:ir.model.fields,field_description:pescini_sale.field_sale_conai__id
+msgid "ID"
+msgstr ""
+
+#. module: pescini_sale
+#: model:ir.model.fields,field_description:pescini_sale.field_sale_conai____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: pescini_sale
+#: model:ir.model.fields,field_description:pescini_sale.field_sale_conai__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: pescini_sale
+#: model:ir.model.fields,field_description:pescini_sale.field_sale_conai__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: pescini_sale
+#: model:ir.model.fields,field_description:pescini_sale.field_sale_conai__name
+msgid "Name"
+msgstr "Nome"
+
+#. module: pescini_sale
+#: model:ir.model.fields,field_description:pescini_sale.field_sale_conai__value
+msgid "Value"
+msgstr "Valore"
+
+#. module: pescini_sale
+#: model:ir.model,name:pescini_sale.model_product_template
+msgid "product.template"
+msgstr ""
+
+#. module: pescini_sale
+#: model:ir.model,name:pescini_sale.model_sale_conai
+msgid "sale.conai"
+msgstr ""
