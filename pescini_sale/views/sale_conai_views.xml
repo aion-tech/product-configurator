@@ -1,0 +1,61 @@
+<odoo>
+  <data>
+    <!-- Task PES-74 -->
+    <record model="ir.ui.view" id="sale_conai_form_view">
+      <field name="name">sale.conai.form.view</field>
+      <field name="model">sale.conai</field>
+      <field name="arch" type="xml">
+        <form string="Conai">
+            <sheet>
+                <group>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group>
+                        <field name="value"/>
+                    </group>
+                </group>
+            </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- Task PES-74 -->
+    <record model="ir.ui.view" id="sale_conai_tree_view">
+      <field name="name">sale.conai.tree.view</field>
+      <field name="model">sale.conai</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- Task PES-74 -->
+    <record id="sale_conai_search_view" model="ir.ui.view" >
+        <field name="name">sale.conai.search.view</field>
+        <field name="model">sale.conai</field>
+        <field name="arch" type="xml">
+            <search string="Conai Search">
+                <field name="name"/>
+                <field name="value"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Task PES-74 -->
+    <record id="sale_conai_action_window" model="ir.actions.act_window">
+        <field name="name">Conai</field>
+        <field name="res_model">sale.conai</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Task PES-74 -->
+    <menuitem name="Conai" 
+              id="sale_conai_assignments_menu" 
+              parent="sale.menu_sale_config" 
+              action="sale_conai_action_window"/>
+  </data>
+</odoo>
+
