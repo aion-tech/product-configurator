@@ -1,10 +1,12 @@
 OCA/l10n-italy:
   remotes:
     origin: git@github.com:aion-tech/l10n-italy.git
+    mktsrl: git@github.com:mktsrl/l10n-italy.git
     OCA: git@github.com:OCA/l10n-italy.git
   merges:
   - OCA 16.0
   - OCA refs/pull/3599/head
+  - mktsrl refs/pull/8/head
   fetch_all:
   - OCA
   target: origin 16.0-pes
