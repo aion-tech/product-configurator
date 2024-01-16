@@ -70,6 +70,10 @@ class CrmLead(BaseModelOdoo):
     )
 
     @property
+    def _olog(self):
+        return True
+
+    @property
     def _opolicy(
         self,
     ) -> Literal["create", "update", "upsert", "skip", "upsert_empty", "update_empty"]:
