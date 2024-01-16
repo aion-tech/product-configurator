@@ -13,3 +13,14 @@ OCA/l10n-italy:
   fetch_all:
   - OCA
   target: origin 16.0-pes-test
+
+OCA/rest-framework:
+  remotes:
+    origin: git@github.com:aion-tech/rest-framework.git
+    OCA: git@github.com:OCA/rest-framework.git
+  merges:
+  - OCA 16.0
+  - OCA refs/pull/410/head
+  fetch_all:
+  - OCA
+  target: origin 16.0-pes-test
