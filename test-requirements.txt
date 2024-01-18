@@ -1,0 +1,2 @@
+# https://github.com/OCA/product-configurator/pull/97
+odoo-addon-product_configurator_sale @ git+https://github.com/OCA/product-configurator.git@refs/pull/97/head#subdirectory=setup/product_configurator_sale
