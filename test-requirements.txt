@@ -2,3 +2,7 @@
 odoo-addon-product_configurator_sale @ git+https://github.com/OCA/product-configurator.git@refs/pull/97/head#subdirectory=setup/product_configurator_sale
 # https://github.com/OCA/product-configurator/pull/101
 odoo-addon-product_configurator @ git+https://github.com/OCA/product-configurator.git@refs/pull/101/head#subdirectory=setup/product_configurator
+# https://github.com/OCA/product-configurator/pull/102
+odoo-addon-product_configurator_mrp @ git+https://github.com/OCA/product-configurator.git@refs/pull/102/head#subdirectory=setup/product_configurator_mrp
+# https://github.com/OCA/product-configurator/pull/103
+odoo-addon-website_product_configurator @ git+https://github.com/OCA/product-configurator.git@refs/pull/103/head#subdirectory=setup/website_product_configurator
