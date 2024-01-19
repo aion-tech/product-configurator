@@ -12,3 +12,4 @@ res_user_pescini_api_group_company_classification_user,Pescini Api: Running user
 res_user_pescini_api_group_utm_campaign,Pescini Api: Running user CRUx utm campaign,utm.model_utm_campaign,pescini_api.pescini_api_group,1,1,1,0
 res_user_pescini_api_group_utm_stage,Pescini Api: Running user xRxx utm stage,utm.model_utm_stage,pescini_api.pescini_api_group,1,0,0,0
 res_user_pescini_api_group_utm_source,Pescini Api: Running user CRUx utm source,utm.model_utm_source,pescini_api.pescini_api_group,1,1,1,0
+res_user_pescini_api_group_api_log,Pescini Api: Running user CRxx api logs,pydantic_base_model_odoo.model_api_log,pescini_api.pescini_api_group,1,0,1,0
