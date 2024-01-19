@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Task PES-91 -->
+    <template id="custom_portal_my_quotations" inherit_id="sale.portal_my_quotations">
+        <xpath expr="//t[3]" position="before">
+            <div id="btn_quotations">
+                <a class="btn btn-primary js_new_quotation" href="" id='quotations_new_quotation'><b>New Quotation</b></a>
+                <a class="btn btn-warning" href="" id='quotations_new_quotation_config'><b>New Quotation with Configurator</b></a>
+            </div>
+        </xpath>
+
+        <xpath expr="//th[3]" position="after">
+            <th style="text-align: right;">State</th>
+            <th style="text-align: right;">Ruledesigner</th>
+        </xpath>
+
+        <xpath expr="//td[@class='text-end'][2]" position="after">
+            <td class="text-end">
+                <span t-field="quotation.state"/>
+            </td>
+            <td class="text-end">
+                <t t-if="quotation.edited_with_ruledesigner">
+                    <i class="fa fa-check-circle"></i>
+                </t>
+                <t t-else="">
+                    <!-- <i class="fa fa-circle"></i> -->
+                </t>
+            </td>
+        </xpath>
+
+        <xpath expr="//td[1]" position="replace">
+            <t t-set="quotation_id_cart" t-value="'/shop/cart/' + str(quotation.id)" />
+            <td>
+                <a t-att-href="quotation_id_cart">
+                    <t t-out="quotation.name"/>
+                </a>
+            </td>
+        </xpath>
+    </template>
+</odoo>

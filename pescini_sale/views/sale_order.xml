@@ -1,0 +1,20 @@
+<odoo>
+  <data>
+
+    <!-- Task PES-74 -->
+    <record id="view_order_form_inherit" model="ir.ui.view">
+      <field name="name">sale.order.form.inherit</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_order_form"/>
+      <field name="arch" type="xml">
+
+        <!-- Task PES-91 -->
+        <xpath expr="//field[@name='payment_term_id']" position="after">
+          <field name='edited_with_ruledesigner' />
+        </xpath>
+
+      </field>
+    </record>
+
+  </data>
+</odoo>
