@@ -15,6 +15,23 @@ OCA/l10n-italy:
   - OCA
   target: origin 16.0-pes-test
 
+OCA/product-configurator:
+  remotes:
+    origin: git@github.com:aion-tech/product-configurator.git
+    ursais: git@github.com:ursais/product-configurator.git
+    dannyadair: git@github.com:dannyadair/product-configurator.git
+    OCA: git@github.com:OCA/product-configurator.git
+  merges:
+  - OCA 16.0
+  - ursais refs/pull/3/head
+  - dannyadair refs/pull/1/head
+  - OCA refs/pull/102/head
+  - OCA refs/pull/103/head
+  - OCA refs/pull/104/head
+  fetch_all:
+  - OCA
+  target: origin 16.0-pes-test
+
 OCA/rest-framework:
   remotes:
     origin: git@github.com:aion-tech/rest-framework.git

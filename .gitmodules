@@ -132,3 +132,7 @@
 	path = OCA/mis-builder
 	url = git@github.com:OCA/mis-builder.git
 	branch = 16.0
+[submodule "OCA/product-configurator"]
+	path = OCA/product-configurator
+	url = git@github.com:aion-tech/product-configurator.git
+	branch = 16.0-pes-test
