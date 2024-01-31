@@ -28,6 +28,9 @@
             "website_product_configurator/static/src/scss/config_form.scss",
             "website_product_configurator/static/src/scss/tooltip.scss",
         ],
+        "web.assets_tests": [
+            "website_product_configurator/static/tests/tours/reconfigure_cart_line.esm.js",
+        ],
     },
     "demo": ["demo/product_template_demo.xml"],
     "images": ["static/description/cover.png"],

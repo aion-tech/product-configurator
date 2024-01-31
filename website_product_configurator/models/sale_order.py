@@ -30,6 +30,24 @@ class SaleOrder(models.Model):
             values["config_session_id"] = int(config_session_id_str)
         return values
 
+    def _prepare_order_line_update_values(self, order_line, quantity, **kwargs):
+        update_values = super()._prepare_order_line_update_values(
+            order_line, quantity, **kwargs
+        )
+        reconfiguring_product_id = kwargs.get("reconfiguring_product_id")
+        config_session_id = kwargs.get("config_session_id")
+        if reconfiguring_product_id and config_session_id:
+            reconfiguring_product = self.env["product.product"].browse(
+                int(reconfiguring_product_id)
+            )
+            config_session = self.env["product.config.session"].browse(
+                int(config_session_id)
+            )
+            if reconfiguring_product.exists() and config_session.exists():
+                update_values["config_session_id"] = config_session.id
+                update_values["product_id"] = reconfiguring_product.id
+        return update_values
+
     def _cart_find_product_line(self, product_id, line_id=None, **kwargs):
         """Include Config session in search."""
         order_line = super()._cart_find_product_line(
