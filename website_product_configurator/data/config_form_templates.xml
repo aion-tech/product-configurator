@@ -778,13 +778,6 @@
                                                             t-field="val.attribute_id.name"
                                                         />:
                                                         <span t-field="val.value" />
-                                                        <input
-                                                            type="hidden"
-                                                            class="variant_custom_value"
-                                                            t-att-data-custom_product_template_attribute_value_id="val.attribute_id.id"
-                                                            t-att-data-attribute_value_name="val.attribute_id.name"
-                                                            t-att-value="val.value"
-                                                        />
                                                         <t
                                                             t-foreach="val.attachment_ids"
                                                             t-as="attachment"

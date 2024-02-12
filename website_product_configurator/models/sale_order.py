@@ -1,6 +1,7 @@
 import logging
 
 from odoo import models
+from odoo.http import request
 
 _logger = logging.getLogger(__name__)
 
@@ -28,6 +29,9 @@ class SaleOrder(models.Model):
         config_session_id_str = kwargs.get("config_session_id")
         if config_session_id_str is not None:
             values["config_session_id"] = int(config_session_id_str)
+            # The current configuration has been assigned to an order line,
+            # new configurations will go in new order lines
+            del request.session["product_config_session"]
         return values
 
     def _prepare_order_line_update_values(self, order_line, quantity, **kwargs):

@@ -23,12 +23,14 @@
     "assets": {
         "web.assets_frontend": [
             "website_product_configurator/static/src/js/config_form.js",
+            "website_product_configurator/static/src/js/variant_mixin.js",
             "website_product_configurator/static/src/js/website_sale.esm.js",
             "website_product_configurator/static/src/js/website_config_tour.js",
             "website_product_configurator/static/src/scss/config_form.scss",
             "website_product_configurator/static/src/scss/tooltip.scss",
         ],
         "web.assets_tests": [
+            "website_product_configurator/static/tests/tours/custom_values.esm.js",
             "website_product_configurator/static/tests/tours/reconfigure_cart_line.esm.js",
         ],
     },
