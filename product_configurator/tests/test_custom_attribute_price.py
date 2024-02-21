@@ -90,7 +90,23 @@ class TestCustomAttributePrice(TransactionCase):
 
         # Assert
         configured_session = wizard.config_session_id
+        configured_custom_value = configured_session.custom_value_ids
+        self.assertEqual(configured_custom_value.price, custom_value * multiplier)
+
         expected_configuration_price = (
-            product_template.list_price + custom_value * multiplier
+            product_template.list_price + configured_custom_value.price
         )
         self.assertEqual(configured_session.price, expected_configuration_price)
+
+        # Act: change the custom value
+        new_custom_value = 2
+        configured_custom_value.value = "%s" % new_custom_value
+
+        # Assert: the price has changed
+        new_expected_custom_price = new_custom_value * multiplier
+        self.assertEqual(configured_custom_value.price, new_expected_custom_price)
+
+        new_expected_configuration_price = (
+            product_template.list_price + configured_custom_value.price
+        )
+        self.assertEqual(configured_session.price, new_expected_configuration_price)

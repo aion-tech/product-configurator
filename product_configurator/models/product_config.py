@@ -333,6 +333,7 @@ class ProductConfigSession(models.Model):
 
     @api.depends(
         "value_ids",
+        "custom_value_ids.price",
         "product_tmpl_id.list_price",
         "product_tmpl_id.attribute_line_ids",
         "product_tmpl_id.attribute_line_ids.value_ids",
@@ -1646,6 +1647,9 @@ class ProductConfigSessionCustomValue(models.Model):
             price = 0
         return price
 
+    @api.depends(
+        "value",
+    )
     def _compute_price(self):
         for custom_value in self:
             custom_value.price = custom_value._eval_price_formula()
