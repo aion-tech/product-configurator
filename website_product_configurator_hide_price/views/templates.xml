@@ -70,4 +70,36 @@
             <attribute name="t-if">not product_hide_price</attribute>
         </xpath>
     </template>
+
+    <template
+        id="config_form_select"
+        inherit_id="website_product_configurator.config_form_select"
+    >
+        <t t-if="price_extra" position="before">
+            <t
+                t-set="product_hide_price"
+                t-value="product_tmpl.website_hide_price or not website.website_show_price"
+            />
+        </t>
+        <!-- Hide extra price -->
+        <t t-if="price_extra" position="attributes">
+            <attribute name="t-if" separator=" " add="and not product_hide_price" />
+        </t>
+    </template>
+
+    <template
+        id="config_form_radio"
+        inherit_id="website_product_configurator.config_form_radio"
+    >
+        <t t-if="price_extra" position="before">
+            <t
+                t-set="product_hide_price"
+                t-value="product_tmpl.website_hide_price or not website.website_show_price"
+            />
+        </t>
+        <!-- Hide extra price -->
+        <t t-if="price_extra" position="attributes">
+            <attribute name="t-if" separator=" " add="and not product_hide_price" />
+        </t>
+    </template>
 </odoo>
