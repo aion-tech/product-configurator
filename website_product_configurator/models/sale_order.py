@@ -29,10 +29,9 @@ class SaleOrder(models.Model):
         config_session_id_str = kwargs.get("config_session_id")
         if config_session_id_str is not None:
             values["config_session_id"] = int(config_session_id_str)
-            if "product_config_session" in request.session:
-                # The current configuration has been assigned to an order line,
-                # new configurations will go in new order lines
-                del request.session["product_config_session"]
+            # The current configuration has been assigned to an order line,
+            # new configurations will go in new order lines
+            del request.session["product_config_session"]
         return values
 
     def _prepare_order_line_update_values(self, order_line, quantity, **kwargs):

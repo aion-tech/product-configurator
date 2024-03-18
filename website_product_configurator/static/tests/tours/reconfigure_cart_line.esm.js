@@ -33,16 +33,15 @@ tour.register(
         {
             content: "Go to Body step",
             trigger: "#product_config_form a:contains('Body')",
-            run: "click",
         },
         {
             content: "Select Red color",
-            // Paint color is the first select of the active tab
-            trigger: "div.show[role='tabpanel'] select",
+            // Paint color has ID 8, couldn't find a better selector
+            trigger: "#__attribute_8",
             run: function () {
-                const color_select = $("div.show[role='tabpanel'] select")[0];
-                const $red = $(color_select).find("option:contains('Red')");
-                $(color_select).val($red.attr("value")).change();
+                const $options = $("#__attribute_8");
+                const $red = $("#__attribute_8 option:contains('Red')");
+                $options.val($red.attr("value")).change();
             },
         },
         {

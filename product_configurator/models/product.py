@@ -12,6 +12,10 @@ _logger = logging.getLogger(__name__)
 
 class ProductTemplate(models.Model):
     _inherit = "product.template"
+    _rec_names_search = [
+        "name",
+        "default_code",
+    ]
 
     @api.depends("product_variant_ids.product_tmpl_id")
     def _compute_product_variant_count(self):
