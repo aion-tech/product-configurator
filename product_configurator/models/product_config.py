@@ -1,5 +1,4 @@
 import logging
-from ast import literal_eval
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
@@ -360,12 +359,7 @@ class ProductConfigSession(models.Model):
         {attribute_id: parsed_custom_value}"""
         custom_vals = {}
         for val in self.custom_value_ids:
-            if val.attribute_id.custom_type in ["float", "integer"]:
-                custom_vals[val.attribute_id.id] = literal_eval(val.value)
-            elif val.attribute_id.custom_type == "binary":
-                custom_vals[val.attribute_id.id] = val.attachment_ids
-            else:
-                custom_vals[val.attribute_id.id] = val.value
+            custom_vals[val.attribute_id.id] = val.eval()
         return custom_vals
 
     def _compute_config_step_name(self):
@@ -405,7 +399,7 @@ class ProductConfigSession(models.Model):
             value_ids = self.value_ids.ids
 
         if custom_vals is None:
-            custom_vals = {}
+            custom_vals = self._get_custom_vals_dict()
 
         product_tmpl = self.product_tmpl_id
 
@@ -817,24 +811,24 @@ class ProductConfigSession(models.Model):
         return prices
 
     @api.model
-    def get_cfg_price(self, value_ids=None, custom_vals_ids=None):
+    def get_cfg_price(self, value_ids=None, custom_vals=None):
         """Computes the price of the configured product based on the
             configuration passed in via value_ids and custom_values
 
         :param value_ids: list of attribute value_ids
-        :param custom_vals_ids: list of custom attribute values IDs
+        :param custom_vals: dictionary of custom attribute values
         :returns: final configuration price"""
 
         if value_ids is None:
             value_ids = self.value_ids.ids
 
-        if custom_vals_ids is None:
-            custom_vals_ids = self.custom_value_ids.ids
+        if custom_vals is None:
+            custom_vals = self._get_custom_vals_dict()
 
-        custom_values = self.env["product.config.session.custom.value"].browse(
-            custom_vals_ids
+        session_custom_values = self.custom_value_ids.filtered(
+            lambda cv: cv.attribute_id.id in custom_vals.keys()
         )
-        custom_prices = custom_values.mapped("price")
+        custom_prices = session_custom_values.mapped("price")
 
         price_extra = sum(custom_prices)
 
