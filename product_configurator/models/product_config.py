@@ -113,10 +113,10 @@ class ProductConfigDomainLine(models.Model):
                 self.env.context.get("product_tmpl_id")
             )
         template_lines = product_template.attribute_line_ids
-        attribute_values = self.attribute_id.value_ids
+        attribute_values = self.attribute_id._configurator_value_ids()
         return (
             product_template
-            and (template_lines.mapped("value_ids") & attribute_values)
+            and (template_lines._configurator_value_ids() & attribute_values)
             or attribute_values
         )
 
@@ -200,11 +200,12 @@ class ProductConfigLine(models.Model):
         ondelete="cascade",
         required=True,
     )
-    # TODO: Find a more elegant way to restrict the value_ids
     attr_line_val_ids = fields.Many2many(
         comodel_name="product.attribute.value",
-        related="attribute_line_id.value_ids",
-        string="Attribute Line Values",
+        compute="_compute_attr_line_val_ids",
+        string="Allowed Attribute Values",
+        help="For normal attributes the values configured for the product can be selected.\n"
+        "For custom attributes the 'Custom' value can also be selected.",
     )
     value_ids = fields.Many2many(
         comodel_name="product.attribute.value",
@@ -222,11 +223,10 @@ class ProductConfigLine(models.Model):
 
     @api.constrains("value_ids")
     def check_value_attributes(self):
-        """Values selected in config lines must belong to the
-        attribute exist on linked attribute line"""
+        """Values selected in config lines must be allowed."""
         for line in self:
-            value_attributes = line.value_ids.mapped("attribute_id")
-            if value_attributes != line.attribute_line_id.attribute_id:
+            forbidden_values = line.value_ids - line.attr_line_val_ids
+            if forbidden_values:
                 raise ValidationError(
                     _(
                         "Values must belong to the attribute of the "
@@ -234,6 +234,16 @@ class ProductConfigLine(models.Model):
                         "configuration line"
                     )
                 )
+
+    @api.depends(
+        "attribute_line_id.value_ids",
+        "attribute_line_id.attribute_id.val_custom",
+    )
+    def _compute_attr_line_val_ids(self):
+        for config_line in self:
+            config_line.attr_line_val_ids = (
+                config_line.attribute_line_id._configurator_value_ids()
+            )
 
 
 class ProductConfigImage(models.Model):
@@ -1270,11 +1280,12 @@ class ProductConfigSession(models.Model):
             if attr.id in custom_vals:
                 attr.validate_custom_val(custom_vals[attr.id])
             if final:
-                common_vals = set(value_ids) & set(line.value_ids.ids)
+                line_values = line._configurator_value_ids()
+                common_vals = set(value_ids) & set(line_values.ids)
                 custom_val = custom_vals.get(attr.id)
                 avail_val_ids = self.values_available(
-                    line.value_ids.ids,
-                    value_ids,
+                    check_val_ids=line_values.ids,
+                    value_ids=value_ids,
                     product_tmpl_id=self.product_tmpl_id,
                 )
                 if (
