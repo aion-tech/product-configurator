@@ -164,7 +164,9 @@ class ProductConfigurator(models.TransientModel):
 
             attribute_line_values = line._configurator_value_ids()
             avail_ids = config_session_id.values_available(
-                check_val_ids=attribute_line_values.ids, value_ids=check_avail_ids
+                check_val_ids=attribute_line_values.ids,
+                value_ids=check_avail_ids,
+                product_template_attribute_line_id=line.id,
             )
             domains[field_name] = [("id", "in", avail_ids)]
             check_avail_ids = list(
@@ -510,7 +512,10 @@ class ProductConfigurator(models.TransientModel):
             attribute = line.attribute_id
             value_ids = line.value_ids.ids
 
-            value_ids = wiz.config_session_id.values_available(check_val_ids=value_ids)
+            value_ids = wiz.config_session_id.values_available(
+                check_val_ids=value_ids,
+                product_template_attribute_line_id=line.id,
+            )
 
             # If attribute lines allows custom values add the
             # generic "Custom" attribute.value to the list of options

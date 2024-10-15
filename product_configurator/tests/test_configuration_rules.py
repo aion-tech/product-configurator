@@ -1,7 +1,7 @@
 #  Copyright 2024 Simone Rubino - Aion Tech
 #  License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from odoo import SUPERUSER_ID
+from odoo import SUPERUSER_ID, Command
 from odoo.exceptions import ValidationError
 from odoo.fields import first
 from odoo.tests.common import Form, TransactionCase
@@ -27,13 +27,25 @@ class ConfigurationRules(TransactionCase):
             **configuration_attribute_context
         )
 
-        custom_attribute_form = Form(configuration_attribute_model)
-        custom_attribute_form.name = "Test custom attribute"
-        custom_attribute_form.val_custom = True
-        cls.custom_attribute = custom_attribute_form.save()
-        cls.custom_attribute_value = cls.env.ref(
+        cls.generic_custom_attribute_value = cls.env.ref(
             "product_configurator.custom_attribute_value"
         )
+
+        custom_attribute_form = Form(configuration_attribute_model)
+        custom_attribute_form.name = "Test custom attribute"
+        with custom_attribute_form.value_ids.new() as value:
+            value.name = "Test custom value"
+        custom_attribute_form.val_custom = True
+        cls.custom_attribute = custom_attribute_form.save()
+        cls.custom_attribute_value = cls.custom_attribute.value_ids
+
+        other_custom_attribute_form = Form(configuration_attribute_model)
+        other_custom_attribute_form.name = "Test other custom attribute"
+        other_custom_attribute_form.val_custom = True
+        with other_custom_attribute_form.value_ids.new() as value:
+            value.name = "Test other custom value"
+        cls.other_custom_attribute = other_custom_attribute_form.save()
+        cls.other_custom_attribute_value = cls.other_custom_attribute.value_ids
 
         regular_attribute_form = Form(configuration_attribute_model)
         regular_attribute_form.name = "Test regular attribute"
@@ -64,17 +76,25 @@ class ConfigurationRules(TransactionCase):
                 regular_line.value_ids.add(attribute_value)
         with product_template_form.attribute_line_ids.new() as custom_line:
             custom_line.attribute_id = cls.custom_attribute
+            for attribute_value in cls.custom_attribute.value_ids:
+                custom_line.value_ids.add(attribute_value)
+        with product_template_form.attribute_line_ids.new() as other_custom_line:
+            other_custom_line.attribute_id = cls.other_custom_attribute
+            for attribute_value in cls.other_custom_attribute.value_ids:
+                other_custom_line.value_ids.add(attribute_value)
         product_template = product_template_form.save()
         product_template.config_ok = True
-        product_template_custom_attribute_line = (
-            product_template.attribute_line_ids.filtered(
-                lambda al: al.attribute_id == cls.custom_attribute
-            )
-        )
+        # When the regular attribute has value 1,
+        # the custom attribute must have the generic custom value.
+        # The other custom attribute id not restricted.
         with Form(product_template) as product_template_form:
             with product_template_form.config_line_ids.new() as restriction:
-                restriction.attribute_line_id = product_template_custom_attribute_line
-                restriction.value_ids.add(cls.custom_attribute_value)
+                restriction.attribute_line_id = (
+                    product_template.attribute_line_ids.filtered(
+                        lambda al: al.attribute_id == cls.custom_attribute
+                    )
+                )
+                restriction.value_ids.add(cls.generic_custom_attribute_value)
                 restriction.domain_id = regular_has_value_1_domain
 
         cls.product_template = product_template
@@ -201,58 +221,36 @@ class ConfigurationRules(TransactionCase):
         with self.assertRaises(ValidationError):
             self.cfg_session.validate_configuration(attr_val_ids, custom_vals)
 
-    def test_require_custom_value(self):
-        """When custom values are restricted, they must be filled."""
-        # Arrange
-        custom_attribute = self.custom_attribute
-        regular_attribute = self.regular_attribute
-        regular_attribute_value_1 = self.regular_attribute_value_1
-        product_template = self.product_template
-
-        wizard_action = product_template.configure_product()
-        wizard = self.env[wizard_action["res_model"]].browse(wizard_action["res_id"])
-        wizard.action_next_step()
-        fields_prefixes = wizard._prefixes
-        field_prefix = fields_prefixes.get("field_prefix")
-        fields_prefixes.get("custom_field_prefix")
-        wizard.write(
-            {
-                field_prefix + str(regular_attribute.id): regular_attribute_value_1.id,
-            }
-        )
-        # pre-condition
-        self.assertEqual(wizard.state, "configure")
-
-        # Act
-        with self.assertRaises(ValidationError) as ve:
-            wizard.action_config_done()
-
-        # Assert
-        exc_message = ve.exception.args[0]
-        self.assertIn("Required attribute", exc_message)
-        self.assertIn(custom_attribute.name, exc_message)
-
     def test_filled_custom_value(self):
         """When custom values are restricted,
-        filling them creates a valid configuration."""
+        filling them correctly creates a valid configuration."""
         # Arrange
+        generic_custom_attribute_value = self.generic_custom_attribute_value
         custom_attribute = self.custom_attribute
-        custom_attribute_value = self.custom_attribute_value
         custom_value = 5
+        other_custom_attribute = self.other_custom_attribute
+        other_custom_attribute_value = self.other_custom_attribute_value
         regular_attribute = self.regular_attribute
         regular_attribute_value_1 = self.regular_attribute_value_1
         product_template = self.product_template
+
         wizard_action = product_template.configure_product()
         wizard = self.env[wizard_action["res_model"]].browse(wizard_action["res_id"])
         wizard.action_next_step()
         fields_prefixes = wizard._prefixes
         field_prefix = fields_prefixes.get("field_prefix")
         custom_field_prefix = fields_prefixes.get("custom_field_prefix")
+        # Regular attribute has value 1
+        # so the custom attribute must have the generic custom value.
+        # The other custom attribute can have any value.
         wizard.write(
             {
                 field_prefix + str(regular_attribute.id): regular_attribute_value_1.id,
-                field_prefix + str(custom_attribute.id): custom_attribute_value.id,
+                field_prefix
+                + str(custom_attribute.id): generic_custom_attribute_value.id,
                 custom_field_prefix + str(custom_attribute.id): custom_value,
+                field_prefix
+                + str(other_custom_attribute.id): other_custom_attribute_value.id,
             }
         )
         # pre-condition
@@ -264,3 +262,64 @@ class ConfigurationRules(TransactionCase):
         # Assert
         config = wizard.config_session_id
         self.assertEqual(config.state, "done")
+
+    def test_fill_restricted_custom_value(self):
+        """When custom values are restricted,
+        filling them with the wrong value creates an invalid configuration."""
+        # Arrange
+        generic_custom_attribute_value = self.generic_custom_attribute_value
+        custom_attribute = self.custom_attribute
+        custom_value = 5
+        other_custom_attribute = self.other_custom_attribute
+        other_custom_attribute_value = self.other_custom_attribute_value
+        regular_attribute = self.regular_attribute
+        regular_attribute_value_2 = self.regular_attribute_value_2
+        product_template = self.product_template
+
+        wizard_action = product_template.configure_product()
+        wizard = self.env[wizard_action["res_model"]].browse(wizard_action["res_id"])
+        wizard.action_next_step()
+        fields_prefixes = wizard._prefixes
+        field_prefix = fields_prefixes.get("field_prefix")
+        custom_field_prefix = fields_prefixes.get("custom_field_prefix")
+        # Regular attribute has value 2
+        # so the custom attribute cannot have the generic custom value.
+        # The other custom attribute can have any value.
+        regular_attribute_field_name = field_prefix + str(regular_attribute.id)
+        custom_attribute_field_name = field_prefix + str(custom_attribute.id)
+        other_custom_attribute_field_name = field_prefix + str(
+            other_custom_attribute.id
+        )
+        wizard_values = {
+            regular_attribute_field_name: regular_attribute_value_2.id,
+            custom_attribute_field_name: generic_custom_attribute_value.id,
+            custom_field_prefix + str(custom_attribute.id): custom_value,
+            other_custom_attribute_field_name: other_custom_attribute_value.id,
+        }
+
+        # Act
+        onchange_result = wizard.onchange(
+            {
+                "value_ids": [
+                    Command.set([wizard_values[regular_attribute_field_name]]),
+                ],
+                **{wiz_field: False for wiz_field in wizard_values.keys()},
+            },
+            regular_attribute_field_name,
+            {
+                regular_attribute_field_name: "1",
+            },
+        )
+
+        # Assert
+        domains = onchange_result["domain"]
+        custom_attribute_domain = domains[custom_attribute_field_name]
+        self.assertNotIn(
+            generic_custom_attribute_value,
+            self.env["product.attribute.value"].search(custom_attribute_domain),
+        )
+        other_custom_attribute_domain = domains[other_custom_attribute_field_name]
+        self.assertIn(
+            generic_custom_attribute_value,
+            self.env["product.attribute.value"].search(other_custom_attribute_domain),
+        )

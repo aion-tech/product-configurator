@@ -1051,7 +1051,9 @@ class ProductConfigSession(models.Model):
         for cfg_line in self.product_tmpl_id.config_step_line_ids:
             for attr_line in cfg_line.attribute_line_ids:
                 available_vals = self.values_available(
-                    attr_line.value_ids.ids, value_ids
+                    attr_line.value_ids.ids,
+                    value_ids,
+                    product_template_attribute_line_id=attr_line.id,
                 )
                 # TODO: Refactor when adding restriction to custom values
                 if available_vals or attr_line.custom:
@@ -1215,6 +1217,7 @@ class ProductConfigSession(models.Model):
         value_ids=None,
         custom_vals=None,
         product_tmpl_id=None,
+        product_template_attribute_line_id=None,
     ):
         """Determines whether the attr_values from the product_template
         are available for selection given the configuration ids and the
@@ -1238,6 +1241,13 @@ class ProductConfigSession(models.Model):
 
         product_tmpl.ensure_one()
 
+        if product_template_attribute_line_id is not None:
+            product_template_attribute_lines = self.env[
+                "product.template.attribute.line"
+            ].browse(product_template_attribute_line_id)
+        else:
+            product_template_attribute_lines = product_tmpl.attribute_line_ids
+
         if value_ids is None:
             value_ids = self.value_ids.ids
         elif value_ids:
@@ -1251,6 +1261,11 @@ class ProductConfigSession(models.Model):
             config_lines = product_tmpl.config_line_ids.filtered(
                 lambda l: attr_val_id in l.value_ids.ids
             )
+            if product_template_attribute_lines:
+                config_lines = config_lines.filtered(
+                    lambda line: line.attribute_line_id
+                    in product_template_attribute_lines
+                )
             domains = config_lines.mapped("domain_id").compute_domain()
             avail = self.validate_domains_against_sels(domains, value_ids, custom_vals)
             if avail:
@@ -1287,6 +1302,7 @@ class ProductConfigSession(models.Model):
                     check_val_ids=line_values.ids,
                     value_ids=value_ids,
                     product_tmpl_id=self.product_tmpl_id,
+                    product_template_attribute_line_id=line.id,
                 )
                 if (
                     line.required
@@ -1341,7 +1357,7 @@ class ProductConfigSession(models.Model):
             attribute_line_ids, custom_vals, value_ids, final=final
         )
 
-        # Check if all all the values passed are not restricted
+        # Check if all the values passed are not restricted
         avail_val_ids = self.values_available(
             value_ids, value_ids, product_tmpl_id=product_tmpl_id
         )
