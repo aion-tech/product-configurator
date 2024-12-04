@@ -3,13 +3,31 @@
 
 from odoo import tests
 from odoo.fields import first
-from odoo.tests import Form
+from odoo.tests import Form, new_test_user
 
 
 class TestSaleOrderLine(tests.TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        cls.configurator_manager_group_xmlid = (
+            "product_configurator.group_product_configurator_manager"
+        )
+        cls.configurator_user_group_xmlid = (
+            "product_configurator.group_product_configurator"
+        )
+        cls.sale_user_group_xmlid = "sales_team.group_sale_salesman"
+        cls.configurator_user = new_test_user(
+            cls.env,
+            login="sale configurator user",
+            groups=",".join(
+                [
+                    cls.configurator_user_group_xmlid,
+                    cls.sale_user_group_xmlid,
+                ]
+            ),
+        )
+
         cls.customer = cls.env["res.partner"].create(
             {
                 "name": "Test partner",
@@ -117,3 +135,39 @@ class TestSaleOrderLine(tests.TransactionCase):
         # Changing the configuration session changes the unit price
         order_line_20.config_session_id = config_session_10
         self.assertEqual(config_session_10.price, order_line_20.price_unit)
+
+    def test_user_access(self):
+        """A configurator and sale user
+        can configure and add products to sale orders."""
+        # Arrange
+        configurator_user = self.configurator_user
+        product_template = self.product_template
+        ptavs = product_template.attribute_line_ids.product_template_value_ids
+        ptav_10 = first(ptavs)
+        attribute = ptav_10.attribute_id
+
+        with self.with_user(configurator_user.login):
+            sale_order = self.env["sale.order"].create(
+                {
+                    "partner_id": self.customer.id,
+                }
+            )
+            # pre-condition
+            self.assertFalse(sale_order.order_line)
+            self.assertFalse(
+                self.env.user.has_group(self.configurator_manager_group_xmlid)
+            )
+            self.assertTrue(self.env.user.has_group(self.configurator_user_group_xmlid))
+            self.assertTrue(self.env.user.has_group(self.sale_user_group_xmlid))
+
+            # Act
+            self._configure_product(
+                sale_order,
+                product_template,
+                {
+                    attribute: ptav_10,
+                },
+            )
+
+        # Assert
+        self.assertTrue(sale_order.order_line)
