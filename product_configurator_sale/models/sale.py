@@ -65,18 +65,15 @@ class SaleOrderLine(models.Model):
             if line.config_session_id:
                 account_tax_obj = self.env["account.tax"]
                 config_price = line.config_session_id.price
-                # context = self.env.context
-                # add config price to context
-                # self = self.with_context(config_price=config_price)
 
-                # import ipdb; ipdb.set_trace()
+                price = None
                 if line.order_id.pricelist_id.discount_policy == "with_discount":
                     line = line.with_context(config_price=config_price)
-                    price = line._get_pricelist_price()
-                else:
+                    if line:
+                        price = line._get_pricelist_price()
+                if not price:
                     price = config_price
-                # price = super(SaleOrderLine, line)._compute_price_unit()
-                # import ipdb; ipdb.set_trace()
+                
                 line.price_unit = account_tax_obj._fix_tax_included_price_company(
                     price,
                     line.product_id.taxes_id,
