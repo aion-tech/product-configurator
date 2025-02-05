@@ -76,3 +76,4 @@ Current `maintainer <https://odoo-community.org/page/maintainer-role>`__:
 This module is part of the `OCA/product-configurator <https://github.com/OCA/product-configurator/tree/16.0/product_configurator_sale>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.
+
