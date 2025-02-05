@@ -66,12 +66,14 @@ class SaleOrderLine(models.Model):
                 account_tax_obj = self.env["account.tax"]
                 config_price = line.config_session_id.price
 
-                price = None
-                if line.order_id.pricelist_id.discount_policy == "with_discount":
+                if (
+                    (line.order_id.pricelist_id.discount_policy == "with_discount")
+                    and
+                    (line and line._origin)
+                    ):
                     line = line.with_context(config_price=config_price)
-                    if line:
-                        price = line._get_pricelist_price()
-                if not price:
+                    price = line._get_pricelist_price()
+                else:
                     price = config_price
                 
                 line.price_unit = account_tax_obj._fix_tax_included_price_company(
