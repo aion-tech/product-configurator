@@ -8,7 +8,7 @@ class PricelistItem(models.Model):
         if self.env.context.get("config_price"):
             price = self.env.context.get("config_price")
         else:
-            price = super()._compute_base_price(
+            price = super(PricelistItem, self)._compute_base_price(
                 product, quantity, uom, date, target_currency
             )
         return price
