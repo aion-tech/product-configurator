@@ -1004,6 +1004,7 @@ class ProductConfigurator(models.TransientModel):
             wizard_id=None,
             allow_preset_selection=False,
             default_product_tmpl_id=session_product_tmpl_id.id,
+            action_reset = True,
         ).get_wizard_action()
         return action
 
@@ -1039,6 +1040,8 @@ class ProductConfigurator(models.TransientModel):
         }
         if wizard:
             wizard_action.update({"res_id": wizard.id})
+        if ctx.get("action_reset", False) and wizard_action['context'].get('wizard_id_view_ref'):
+            wizard_action['context'].pop('wizard_id_view_ref')
         return wizard_action
 
     def open_step(self, step):
