@@ -53,6 +53,38 @@ class SaleOrderLine(models.Model):
         return self.product_id.product_tmpl_id.create_config_wizard(
             model_name=wizard_model, extra_vals=extra_vals
         )
+    
+    def _compute_price_unit_for_configured_products(self):
+        account_tax_obj = self.env["account.tax"]
+        config_price = self.config_session_id.price
+        if self.order_id.pricelist_id.discount_policy == "with_discount":
+            self = self.with_context(config_price=config_price)
+            if not self.product_id:
+                if not self.price_unit:
+                    self.price_unit = config_price
+                pricelist_id = self.order_id.pricelist_id._get_product_price_rule(
+                    product = self.config_session_id.product_id,
+                    quantity = 1.0,
+                )[1]
+                pricelist = self.env["product.pricelist.item"].browse(pricelist_id)
+                price = pricelist.with_context(
+                    config_price=config_price)._compute_base_price(
+                    product = self.config_session_id.product_id, 
+                    quantity = 1, 
+                    uom = self.config_session_id.product_id.uom_id, 
+                    date = self.order_id.date_order, 
+                    target_currency = self.config_session_id.currency_id)
+            else:
+                price = self._get_pricelist_price()
+        else:
+            price = config_price
+
+        self.price_unit = account_tax_obj._fix_tax_included_price_company(
+            price,
+            self.product_id.taxes_id,
+            self.tax_id,
+            self.company_id,
+        )
 
     @api.depends(
         "config_session_id",
@@ -60,19 +92,11 @@ class SaleOrderLine(models.Model):
         "company_id",
     )
     def _compute_price_unit(self):
-        result = None
         for line in self:
             if line.config_session_id:
-                account_tax_obj = self.env["account.tax"]
-                line.price_unit = account_tax_obj._fix_tax_included_price_company(
-                    line.config_session_id.price,
-                    line.product_id.taxes_id,
-                    line.tax_id,
-                    line.company_id,
-                )
+                return line._compute_price_unit_for_configured_products() 
             else:
-                result = super(SaleOrderLine, line)._compute_price_unit()
-        return result
+                 return super(SaleOrderLine, line)._compute_price_unit()
 
     def _get_sale_order_line_multiline_description_variants(self):
         name = ""
