@@ -204,7 +204,8 @@ class ProductConfigLine(models.Model):
         comodel_name="product.attribute.value",
         compute="_compute_attr_line_val_ids",
         string="Allowed Attribute Values",
-        help="For normal attributes the values configured for the product can be selected.\n"
+        help="For normal attributes "
+        "the values configured for the product can be selected.\n"
         "For custom attributes the 'Custom' value can also be selected.",
     )
     value_ids = fields.Many2many(
@@ -328,7 +329,7 @@ class ProductConfigStepLine(models.Model):
         for config_step in self:
             cfg_step_lines = config_step.product_tmpl_id.config_step_line_ids
             cfg_steps = cfg_step_lines.filtered(
-                lambda line: line != config_step
+                lambda line, config_step=config_step: line != config_step
             ).mapped("config_step_id")
             if config_step.config_step_id in cfg_steps:
                 raise ValidationError(
@@ -388,7 +389,7 @@ class ProductConfigSession(models.Model):
             try:
                 config_step = int(session.config_step)
                 config_step_line = cfg_step_lines.filtered(
-                    lambda x: x.id == config_step
+                    lambda x, config_step=config_step: x.id == config_step
                 )
                 session.config_step_name = config_step_line.name
             except Exception:
@@ -614,7 +615,7 @@ class ProductConfigSession(models.Model):
         value_ids = self.value_ids.ids
         for attr_id, vals in attr_val_dict.items():
             attr_val_ids = self.value_ids.filtered(
-                lambda x: x.attribute_id.id == int(attr_id)
+                lambda x, attr_id=attr_id: x.attribute_id.id == int(attr_id)
             ).ids
             # Remove all values for this attribute and add vals from dict
             value_ids = list(set(value_ids) - set(attr_val_ids))
@@ -675,7 +676,7 @@ class ProductConfigSession(models.Model):
     def write(self, vals):
         """Validate configuration when writing new values to session"""
         # TODO: Issue warning when writing to value_ids or custom_val_ids
-        res = super(ProductConfigSession, self).write(vals)
+        res = super().write(vals)
         if not self.product_tmpl_id:
             return res
         value_ids = self.value_ids.ids
@@ -685,7 +686,7 @@ class ProductConfigSession(models.Model):
         try:
             self.validate_configuration(final=False)
         except ValidationError as exc:
-            raise exc
+            raise ValidationError(_(f"{exc}")) from exc
         except Exception as exc:
             raise ValidationError(_("Invalid Configuration")) from exc
         return res
@@ -703,7 +704,9 @@ class ProductConfigSession(models.Model):
             )
             if product_tmpl:
                 default_val_ids = (
-                    product_tmpl.attribute_line_ids.filtered(lambda l: l.default_val)
+                    product_tmpl.attribute_line_ids.filtered(
+                        lambda line: line.default_val
+                    )
                     .mapped("default_val")
                     .ids
                 )
@@ -719,7 +722,7 @@ class ProductConfigSession(models.Model):
                     # TODO: Remove if cond when PR with
                     # raise error on github is merged
                 except ValidationError as exc:
-                    raise exc
+                    raise ValidationError(_("%s") % exc.name) from exc
                 except Exception as exc:
                     raise ValidationError(
                         _(
@@ -728,7 +731,7 @@ class ProductConfigSession(models.Model):
                         )
                     ) from exc
                 vals.update({"value_ids": [(6, 0, default_val_ids)]})
-        return super(ProductConfigSession, self).create(vals_list)
+        return super().create(vals_list)
 
     def create_get_variant(self, value_ids=None, custom_vals=None):
         """Creates a new product variant with the attributes passed
@@ -752,7 +755,7 @@ class ProductConfigSession(models.Model):
         try:
             self.validate_configuration()
         except ValidationError as exc:
-            raise exc
+            raise ValidationError(_("%s") % exc.name) from exc
         except Exception as exc:
             raise ValidationError(_("Invalid Configuration")) from exc
 
@@ -1095,7 +1098,7 @@ class ProductConfigSession(models.Model):
             return {}
 
         active_cfg_step_line = config_step_lines.filtered(
-            lambda l: l.id == active_step_line_id
+            lambda line: line.id == active_step_line_id
         )
 
         open_step_lines = self.get_open_step_lines(value_ids)
@@ -1174,7 +1177,6 @@ class ProductConfigSession(models.Model):
         return domain
 
     def validate_domains_against_sels(self, domains, value_ids=None, custom_vals=None):
-
         if custom_vals is None:
             custom_vals = self._get_custom_vals_dict()
 
@@ -1185,7 +1187,7 @@ class ProductConfigSession(models.Model):
         # https://en.wikipedia.org/wiki/Polish_notation#Order_of_operations
         stack = []
         for domain in reversed(domains):
-            if type(domain) == tuple:
+            if isinstance(domain, tuple):
                 # evaluate operand and push to stack
                 if domain[1] == "in":
                     if not set(domain[2]) & set(value_ids):
@@ -1259,7 +1261,7 @@ class ProductConfigSession(models.Model):
         avail_val_ids = []
         for attr_val_id in check_val_ids:
             config_lines = product_tmpl.config_line_ids.filtered(
-                lambda l: attr_val_id in l.value_ids.ids
+                lambda line, attr_val_id=attr_val_id: attr_val_id in line.value_ids.ids
             )
             if product_template_attribute_lines:
                 config_lines = config_lines.filtered(
@@ -1373,14 +1375,10 @@ class ProductConfigSession(models.Model):
                 else:
                     group_by_attr[val.attribute_id] = val
 
-            message = "The following values are not available:%s"
-            message_vals = ""
+            message = _("The following values are not available:")
             for attr, val in group_by_attr.items():
-                message_vals += "\n%s: %s" % (
-                    attr.name,
-                    ", ".join(val.mapped("name")),
-                )
-            raise ValidationError(_(message, message_vals))
+                message += "\n {}: {}".format(attr.name, ", ".join(val.mapped("name")))
+            raise ValidationError(message)
 
         # Check if custom values are allowed
         custom_attr_ids = (
@@ -1395,7 +1393,7 @@ class ProductConfigSession(models.Model):
             custom_attrs_with_error = self.env["product.attribute"].browse(
                 custom_attrs_with_error
             )
-            error_message = (
+            error_message = _(
                 "The following custom values are not permitted "
                 "according to the product template - %s.\n\nIt is possible "
                 "that a change has been made to allowed custom values "
@@ -1405,15 +1403,12 @@ class ProductConfigSession(models.Model):
             )
             message_vals = ""
             for attr_id in custom_attrs_with_error:
-                message_vals += "\n%s: %s" % (
-                    attr_id.name,
-                    custom_vals.get(attr_id.id),
-                )
-            raise ValidationError(_(error_message, message_vals))
+                message_vals += f"\n {attr_id.name}: {custom_vals.get(attr_id.id)}"
+            raise ValidationError(error_message % (message_vals))
 
         # Check if there are multiple values passed for non-multi attributes
         mono_attr_lines = product_tmpl.attribute_line_ids.filtered(
-            lambda l: not l.multi
+            lambda line: not line.multi
         )
         attrs_with_error = {}
         for line in mono_attr_lines:
@@ -1423,7 +1418,7 @@ class ProductConfigSession(models.Model):
                 )
                 attrs_with_error[line.attribute_id] = wrong_vals
         if attrs_with_error:
-            error_message = (
+            error_message = _(
                 "The following multi values are not permitted "
                 "according to the product template - %s.\n\nIt is possible "
                 "that a change has been made to allowed multi values "
@@ -1433,11 +1428,10 @@ class ProductConfigSession(models.Model):
             )
             message_vals = ""
             for attr_id, vals in attrs_with_error.items():
-                message_vals += "\n%s: %s" % (
-                    attr_id.name,
-                    ", ".join(vals.mapped("name")),
+                message_vals += "\n {}: {}".format(
+                    attr_id.name, ", ".join(vals.mapped("name"))
                 )
-            raise ValidationError(_(error_message, message_vals))
+            raise ValidationError(error_message % (message_vals))
         return True
 
     @api.model
@@ -1558,7 +1552,7 @@ class ProductConfigSession(models.Model):
         specs = model_obj._onchange_spec()
         new_specs = {}
         for key, val in specs.items():
-            new_specs["%s.%s" % (parent, key)] = val
+            new_specs[f"{parent}.{key}"] = val
         return new_specs
 
     @api.model
@@ -1614,7 +1608,7 @@ class ProductConfigSessionCustomValue(models.Model):
     def _compute_val_name(self):
         for attr_val_custom in self:
             uom = attr_val_custom.attribute_id.uom_id.name
-            attr_val_custom.name = "%s%s" % (
+            attr_val_custom.name = "{}{}".format(
                 attr_val_custom.value,
                 (" %s" % uom) or "",
             )
@@ -1692,10 +1686,12 @@ class ProductConfigSessionCustomValue(models.Model):
     @api.constrains("cfg_session_id", "attribute_id")
     def unique_attribute(self):
         for custom_val in self:
+            values = custom_val.cfg_session_id.custom_value_ids
             if (
                 len(
-                    custom_val.cfg_session_id.custom_value_ids.filtered(
-                        lambda x: x.attribute_id == custom_val.attribute_id
+                    values.filtered(
+                        lambda x, custom_val=custom_val: x.attribute_id
+                        == custom_val.attribute_id
                     )
                 )
                 > 1
