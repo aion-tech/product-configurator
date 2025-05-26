@@ -774,7 +774,7 @@ class ProductConfigurator(models.TransientModel):
             self.setup_modifiers(node)
             xml_dynamic_form.append(node)
 
-            if attr_line.custom and custom_field in dynamic_fields:
+            if attr_line.custom and custom_field in dynamic_fields and not attr_line.is_computed:
                 widget = ""
                 config_session_obj = self.env["product.config.session"]
                 custom_option_id = config_session_obj.get_custom_value_id().id
