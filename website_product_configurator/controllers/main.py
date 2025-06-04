@@ -142,6 +142,10 @@ class ProductConfigWebsiteSale(WebsiteSale):
             pricelist=pricelist,
         )
 
+        # remove from extra_attribute_line_ids computed values
+        extra_attribute_line_ids = extra_attribute_line_ids.filtered(
+            lambda line: not line.is_computed
+        )
         vals = {
             "cfg_session": cfg_session,
             "cfg_step_lines": cfg_step_lines,
@@ -164,6 +168,7 @@ class ProductConfigWebsiteSale(WebsiteSale):
             "pricelist": pricelist,
             "extra_prices": extra_prices,
         }
+        import ipdb; ipdb.set_trace()
         return vals
 
     def render_form(
